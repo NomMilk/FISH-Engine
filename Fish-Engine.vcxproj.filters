@@ -36,6 +36,9 @@
     <ClCompile Include="VAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.vert">
@@ -56,6 +59,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
