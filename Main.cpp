@@ -25,12 +25,12 @@ int main()
 	//vertices position 
 	GLfloat vertices[] =
 	{
-		-2.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		2.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		2.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		-2.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
-		2.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
-		2.0, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.2f,
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, 0.1f, 0.5f, 0.7f,
+		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
+		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
+		0.0, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.2f,
 	};
 
 	GLuint indices[] =
@@ -84,7 +84,7 @@ int main()
 		camera.Matrix(shaderProgram, "camMatrix");
 
 		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
