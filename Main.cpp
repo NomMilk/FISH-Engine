@@ -25,12 +25,12 @@ int main()
 	//vertices position 
 	GLfloat vertices[] =
 	{
-		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
-		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
-		0.0, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.2f,
+		-2.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
+		2.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
+		2.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, 0.1f, 0.5f, 0.7f,
+		-2.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
+		2.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
+		2.0, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.2f,
 	};
 
 	GLuint indices[] =
@@ -79,7 +79,9 @@ int main()
 		shaderProgram.Activate();
 		
 		camera.Inputs(window);
-		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+		camera.updateMatrix(45.0f, 0.1f, 100.0f);
+
+		camera.Matrix(shaderProgram, "camMatrix");
 
 		VAO1.Bind();
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
