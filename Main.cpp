@@ -25,20 +25,23 @@ int main()
 	//vertices position 
 	GLfloat vertices[] =
 	{
-		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, 0.1f, 0.5f, 0.7f,
-		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
-		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, 0.1f, 0.5f, 0.2f,
-		0.0, -0.5f * float(sqrt(3)) / 3, 0.0f, 0.1f, 0.5f, 0.2f,
+	   -0.5f, 0.0f,  0.5f,  0.83f, 0.70f, 0.44f,
+	   -0.5f, 0.0f, -0.5f,  0.83f, 0.70f, 0.44f,
+		0.5f, 0.0f, -0.5f,  0.83f, 0.70f, 0.44f,
+		0.5f, 0.0f,  0.5f,  0.83f, 0.70f, 0.44f,
+		0.0f, 1.0f,  0.0f,  0.83f, 0.70f, 0.44f
 	};
 
 	GLuint indices[] =
 	{
-		0, 3, 5,
-		3, 2, 4,
-		5, 4, 1
+		0, 1, 2,
+		0, 2, 3,
+		0, 1, 4,
+		1, 2, 4,
+		2, 3, 4,
+		3, 0, 4
 	};
+
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
 	if (window == NULL)
@@ -53,7 +56,7 @@ int main()
 
 	glViewport(0, 0, width, height);
 
-	Shader shaderProgram("default.vert", "default.frag");
+	Shader shaderProgram("Default.vert", "Default.frag");
 
 	VAO VAO1;
 	VAO1.Bind();
