@@ -16,6 +16,34 @@
 const unsigned int width = 800;
 const unsigned int height = 800;
 
+//VAO util
+//THIS ONLY WORKS FOR STATIC OBJECTS, THIS DOES NOT DELETE THE VAO WHEN IT'S NOT USED!!!
+VAO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
+{
+	VAO vao;
+	vao.Bind();
+
+	VBO vbo(vertices, vertexSize);
+	EBO ebo(indices, indexSize);
+
+	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	vao.Unbind();
+	vbo.Unbind();
+	ebo.Unbind();
+
+	return vao;
+}
+
+void DrawTriVAO(VAO& drawnVAO, size_t indices)
+{
+	drawnVAO.Bind();
+	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+	drawnVAO.Unbind();
+}
+
+//actual Game
 int main()
 {
 	glfwInit();
@@ -72,35 +100,11 @@ int main()
 
 	glViewport(0, 0, width, height);
 
-	
-
 	Shader shaderProgram("Default.vert", "Default.frag");
 
-	VAO VAO2;
-	VAO2.Bind();
-	
-	VBO VBO2(groundVertices, sizeof(groundVertices));
-	EBO EBO2(groundIndices, sizeof(groundIndices));
-
-	VAO2.LinkAttrib(VBO2, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO2.LinkAttrib(VBO2, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	VAO2.Unbind();
-	VBO2.Unbind();
-	EBO2.Unbind();
-
-
-	VAO VAO1;
-	VAO1.Bind();
-
-	VBO VBO1(vertices, sizeof(vertices));
-	EBO EBO1(indices, sizeof(indices));
-
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
-
+	VAO groundVAO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
+	VAO triangleVAO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
+ 
 	glEnable(GL_DEPTH_TEST);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
@@ -124,23 +128,13 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		camera.Matrix(shaderProgram, "camMatrix");
-
-		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
-
-		VAO2.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
+		
+		DrawTriVAO(triangleVAO, 18);
+		DrawTriVAO(groundVAO, 6);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	VAO2.Delete();
-	VBO2.Delete();
-	EBO2.Delete();
-
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
