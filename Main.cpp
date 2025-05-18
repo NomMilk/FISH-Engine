@@ -51,8 +51,22 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
+
 	//vertices position 
+	GLfloat textureVertices[] =
+	{
+		5.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		5.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		6.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		6.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f
+	};
+
+	GLuint textureIndices[] =
+	{
+		0, 1, 2,
+		1, 3, 2
+	};
+
 	GLfloat groundVertices[] =
 	{
 	   -20.0f, -2.0f,  20.0f,  0.28f, 0.75f, 0.00f,
@@ -101,7 +115,8 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("Default.vert", "Default.frag");
-
+	
+	VAO textureVAO = VAOLinker(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
 	VAO groundVAO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
 	VAO triangleVAO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
  
@@ -131,6 +146,7 @@ int main()
 		
 		DrawTriVAO(triangleVAO, 18);
 		DrawTriVAO(groundVAO, 6);
+		DrawTriVAO(textureVAO, 6);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
