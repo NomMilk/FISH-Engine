@@ -25,32 +25,27 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
 	//vertices position 
-	GLfloat otherVertices[] =
+	GLfloat groundVertices[] =
 	{
-	   -0.5f, 0.0f,  0.5f,  0.83f, 0.70f, 0.00f,
-	   -0.5f, 0.0f, -0.5f,  0.83f, 0.70f, 0.00f,
-		0.5f, 0.0f, -0.5f,  0.83f, 0.70f, 0.00f,
-		0.5f, 0.0f,  0.5f,  0.83f, 0.70f, 0.00f,
-		0.0f, 1.0f,  0.0f,  0.83f, 0.70f, 0.44f
+	   -20.0f, -2.0f,  20.0f,  0.28f, 0.75f, 0.00f,
+	   -20.0f, -2.0f, -20.0f,  0.28f, 0.75f, 0.00f,
+		20.0f, -2.0f, -20.0f,  0.28f, 0.75f, 0.00f,
+		20.0f, -2.0f,  20.0f,  0.28f, 0.75f, 0.00f,
 	};
 
-	GLuint otherIndices[] =
+	GLuint groundIndices[] =
 	{
 		0, 1, 2,
-		0, 2, 3,
-		0, 1, 4,
-		1, 2, 4,
-		2, 3, 4,
-		3, 0, 4
+		0, 2, 3
 	};
 
 	GLfloat vertices[] =
 	{
-	   -2.5f, 0.0f,  0.5f,  0.83f, 0.70f, 0.44f,
-	   -2.5f, 0.0f, -0.5f,  0.83f, 0.70f, 0.44f,
-	   -1.5f, 0.0f, -0.5f,  0.83f, 0.70f, 0.44f,
-	   -1.5f, 0.0f,  0.5f,  0.83f, 0.70f, 0.44f,
-	   -2.0f, 1.0f,  0.0f,  0.00f, 0.90f, 0.00f
+	   -2.5f, 0.0f,  0.5f,  0.00f, 0.00f, 1.00f,
+	   -2.5f, 0.0f, -0.5f,  0.00f, 0.00f, 1.00f,
+	   -1.5f, 0.0f, -0.5f,  0.00f, 0.00f, 1.00f,
+	   -1.5f, 0.0f,  0.5f,  0.00f, 0.00f, 1.00f,
+	   -2.0f, 1.0f,  0.0f,  0.00f, 0.00f, 1.00f
 	};
 
 	GLuint indices[] =
@@ -84,8 +79,8 @@ int main()
 	VAO VAO2;
 	VAO2.Bind();
 	
-	VBO VBO2(otherVertices, sizeof(otherVertices));
-	EBO EBO2(otherIndices, sizeof(otherIndices));
+	VBO VBO2(groundVertices, sizeof(groundVertices));
+	EBO EBO2(groundIndices, sizeof(groundIndices));
 
 	VAO2.LinkAttrib(VBO2, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
 	VAO2.LinkAttrib(VBO2, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -120,7 +115,7 @@ int main()
 		deltaTime = elapsed.count();
 		lastTick = now;
 
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.51f, 0.784f, 0.898f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.Activate();
