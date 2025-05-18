@@ -75,6 +75,10 @@ int main()
 
 	glViewport(0, 0, width, height);
 
+	
+
+	Shader shaderProgram("Default.vert", "Default.frag");
+
 	VAO VAO2;
 	VAO2.Bind();
 	
@@ -87,8 +91,6 @@ int main()
 	VBO2.Unbind();
 	EBO2.Unbind();
 
-
-	Shader shaderProgram("Default.vert", "Default.frag");
 
 	VAO VAO1;
 	VAO1.Bind();
