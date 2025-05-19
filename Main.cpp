@@ -63,8 +63,8 @@ int main()
 
 	GLuint textureIndices[] =
 	{
-		0, 1, 2,
-		1, 3, 2
+		0, 2, 1,
+		1, 2, 3
 	};
 
 	GLfloat groundVertices[] =
@@ -77,8 +77,8 @@ int main()
 
 	GLuint groundIndices[] =
 	{
-		0, 1, 2,
-		0, 2, 3
+		0, 2, 1, 
+		0, 3, 2
 	};
 
 	GLfloat vertices[] =
@@ -121,6 +121,9 @@ int main()
 	VAO triangleVAO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
  
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	
