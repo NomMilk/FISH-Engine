@@ -15,7 +15,7 @@
 #include "EBO.h"
 #include "Camera.h"
 
-const unsigned int width = 800;
+const unsigned int width = 1000;
 const unsigned int height = 800;
 
 //VAO util
@@ -61,9 +61,9 @@ int main()
 	{
 		//position//				//color//			//texture//
 		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
-		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f,
-		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f
+		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
+		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
+		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f
 	};
 
 	GLuint textureIndices[] =
@@ -113,6 +113,9 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
+
+	//first width and height is ratio and next two is the max height and width
+	glfwSetWindowSizeLimits(window, width, height, width, height);
 	glfwMakeContextCurrent(window);
 	
 	gladLoadGL();
