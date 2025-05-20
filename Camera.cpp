@@ -62,7 +62,10 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
 
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
-
+		
+		//this is to prevent it from going all the way back over if you look up
+		//but like I don't have the issue when I commnted it out ???
+		//i'll just keep it since they kept it in the yt tutorial
 		if (!(glm::angle(newOrientation, Up)) <= glm::radians(5.0f) or glm::angle(newOrientation, -Up) <= glm::radians(5.0f))
 		{
 			Orientation = newOrientation;

@@ -9,6 +9,7 @@
 
 #include <stb/stb_image.h>
 
+#include "Texture.h"
 #include "shaderClass.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -61,8 +62,8 @@ int main()
 	{
 		//position//				//color//			//texture//
 		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
-		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
+		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
+		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
 		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f
 	};
 
@@ -152,30 +153,9 @@ int main()
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
 	
-	int widthImg, heightImg, numColCh;
-	unsigned char* bytes = stbi_load("goldfish.jpg", &widthImg, &heightImg, &numColCh, 0);
-
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, bytes);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	stbi_image_free(bytes);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	GLuint tex0Uni = glGetUniformLocation(shaderProgram.ID, "tex0");
-	shaderProgram.Activate();
-	glUniform1i(tex0Uni, 0);
-
+	Texture goldFish("goldfish.jpg", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
+	goldFish.texUnit(shaderProgram, "tex0", 0);
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		auto now = std::chrono::system_clock::now();
@@ -197,9 +177,8 @@ int main()
 		DrawTriVAO(triangleVAO, 18);
 		DrawTriVAO(groundVAO, 6);
 		
-
+		goldFish.Bind();
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
-		glBindTexture(GL_TEXTURE_2D, texture);
 		DrawTriVAO(textureVAO, 6);
 
 		glfwSwapBuffers(window);
