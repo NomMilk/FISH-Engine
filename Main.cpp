@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <stb/stb_image.h>
+
 #include "shaderClass.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -25,8 +27,10 @@ VAO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t inde
 
 	VBO vbo(vertices, vertexSize);
 	EBO ebo(indices, indexSize);
-
+	
+	//bind position
 	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	//bind colors
 	vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
 	vao.Unbind();
@@ -55,10 +59,11 @@ int main()
 	//vertices position 
 	GLfloat textureVertices[] =
 	{
-		5.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-		5.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-		6.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-		6.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f
+		//position//				//color//			//texture//
+		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
+		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
+		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f,
+		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f
 	};
 
 	GLuint textureIndices[] =
@@ -116,9 +121,23 @@ int main()
 
 	Shader shaderProgram("Default.vert", "Default.frag");
 	
-	VAO textureVAO = VAOLinker(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
 	VAO groundVAO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
 	VAO triangleVAO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
+
+	VAO textureVAO;
+	textureVAO.Bind();
+
+	VBO textureVBO(textureVertices, sizeof(textureVertices));
+	EBO textureEBO(textureIndices, sizeof(textureIndices));
+	
+	textureVAO.LinkAttrib(textureVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
+	textureVAO.LinkAttrib(textureVBO, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	textureVAO.LinkAttrib(textureVBO, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+
+	textureVAO.Unbind();
+	textureVBO.Unbind();
+	textureEBO.Unbind();
+
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -129,6 +148,30 @@ int main()
 	
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
+	
+	int widthImg, heightImg, numColCh;
+	unsigned char* bytes = stbi_load("goldfish.jpg", &widthImg, &heightImg, &numColCh, 0);
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, bytes);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(bytes);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	GLuint tex0Uni = glGetUniformLocation(shaderProgram.ID, "tex0");
+	shaderProgram.Activate();
+	glUniform1i(tex0Uni, 0);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -147,8 +190,13 @@ int main()
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
 		DrawTriVAO(triangleVAO, 18);
 		DrawTriVAO(groundVAO, 6);
+		
+
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
+		glBindTexture(GL_TEXTURE_2D, texture);
 		DrawTriVAO(textureVAO, 6);
 
 		glfwSwapBuffers(window);
