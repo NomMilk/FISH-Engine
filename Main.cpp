@@ -41,6 +41,25 @@ VAO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t inde
 	return vao;
 }
 
+VAO VAOLinkerTexture(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
+{
+	VAO textureVAO;
+	textureVAO.Bind();
+
+	VBO textureVBO(vertices, vertexSize);
+	EBO textureEBO(indices, indexSize);
+	
+	textureVAO.LinkAttrib(textureVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
+	textureVAO.LinkAttrib(textureVBO, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	textureVAO.LinkAttrib(textureVBO, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+
+	textureVAO.Unbind();
+	textureVBO.Unbind();
+	textureEBO.Unbind();
+	
+	return textureVAO;
+}
+
 void DrawTriVAO(VAO& drawnVAO, size_t indices)
 {
 	drawnVAO.Bind();
@@ -127,35 +146,23 @@ int main()
 	
 	VAO groundVAO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
 	VAO triangleVAO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
-
-	VAO textureVAO;
-	textureVAO.Bind();
-
-	VBO textureVBO(textureVertices, sizeof(textureVertices));
-	EBO textureEBO(textureIndices, sizeof(textureIndices));
-	
-	textureVAO.LinkAttrib(textureVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-	textureVAO.LinkAttrib(textureVBO, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	textureVAO.LinkAttrib(textureVBO, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-
-	textureVAO.Unbind();
-	textureVBO.Unbind();
-	textureEBO.Unbind();
+	VAO textureVAO = VAOLinkerTexture(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
 
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	
+	//create / load textures
+	Texture goldFish("goldfish.jpg", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
+	goldFish.texUnit(shaderProgram, "tex0", 0);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	
+	//delta time stuff
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
-	
-	Texture goldFish("goldfish.jpg", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
-	goldFish.texUnit(shaderProgram, "tex0", 0);
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		auto now = std::chrono::system_clock::now();
