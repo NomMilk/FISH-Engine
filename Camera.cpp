@@ -25,6 +25,33 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 
 void Camera::Inputs(GLFWwindow* window, float deltaTime)
 {
+	//Camera Movement
+	if (firstClick)
+	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+		double mouseX;
+		double mouseY;
+		glfwGetCursorPos(window, &mouseX, &mouseY);
+
+		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
+		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
+
+		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
+		
+		//this is to prevent it from going all the way back over if you look up
+		//but like I don't have the issue when I commnted it out ???
+		//i'll just keep it since they kept it in the yt tutorial
+		if (!(glm::angle(newOrientation, Up)) <= glm::radians(5.0f) or glm::angle(newOrientation, -Up) <= glm::radians(5.0f))
+		{
+			Orientation = newOrientation;
+		}
+		
+		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
+
+		glfwSetCursorPos(window, (width / 2), (height / 2));
+	}
+
 	glm::vec3 forward = glm::normalize(glm::vec3(Orientation.x, 0.0f, Orientation.z));
 	glm::vec3 side = glm::normalize(glm::cross(forward, Up));
 
@@ -48,32 +75,21 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		Position += speed * side * deltaTime;
 	}
 
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || firstClick)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		if (!firstClick) firstClick = true;
+		if (wasMouseClicked) return;
+		//this code is for detecting first click
+		//might be better to use the "Keycallback thingy"
+		//but like i don't want to read the docs so we have this other solution
+		//where we just deletcts if it releases then set it back for the OnClick event
+		std::cout << "Clicked!\n";
+		wasMouseClicked = true;
+	}
 
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-		double mouseX;
-		double mouseY;
-		glfwGetCursorPos(window, &mouseX, &mouseY);
-
-		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
-
-		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
-		
-		//this is to prevent it from going all the way back over if you look up
-		//but like I don't have the issue when I commnted it out ???
-		//i'll just keep it since they kept it in the yt tutorial
-		if (!(glm::angle(newOrientation, Up)) <= glm::radians(5.0f) or glm::angle(newOrientation, -Up) <= glm::radians(5.0f))
-		{
-			Orientation = newOrientation;
-		}
-		
-		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
-
-		glfwSetCursorPos(window, (width / 2), (height / 2));
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	{
+		wasMouseClicked = false;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
