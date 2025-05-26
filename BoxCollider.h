@@ -1,14 +1,14 @@
 #pragma once
+#include <glm/glm.hpp>
 
 class BoxCollider
 {
 	public:
-		void SetEdge(float LT, float LB, float RT, float RB);
-		void CheckCollision();
+		BoxCollider(float LT, float LB, float RT, float RB);
+
+		bool CheckCollision(BoxCollider _Collider);
+		bool CheckCollision(float LT, float LB, float RT, float RB);
 
 	private:
-		float LeftTopEdge;
-		float LeftBottomEdge;
-		float RightTopEdge;
-		float RightBottomEdge;
+		glm::vec4 ColliderVertex;
 };
