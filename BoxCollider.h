@@ -4,10 +4,8 @@
 class BoxCollider
 {
 	public:
-		BoxCollider(float LT, float LB, float RT, float RB);
-
-		bool CheckCollision(BoxCollider _Collider);
-		bool CheckCollision(float LT, float LB, float RT, float RB);
+		BoxCollider(float x, float y, float Height, float Width);
+		bool CheckCollision(float x, float y);
 
 	private:
 		glm::vec4 ColliderVertex;

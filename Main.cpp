@@ -10,6 +10,7 @@
 #include <stb/stb_image.h>
 
 #include "Texture.h"
+#include "BoxCollider.h"
 #include "shaderClass.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -70,6 +71,8 @@ void DrawTriVAO(VAO& drawnVAO, size_t indices)
 //actual Game
 int main()
 {
+	BoxCollider TestCollider(2.0f, 2.0f, 2.0f, 2.0f);
+
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -179,7 +182,11 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		camera.Matrix(shaderProgram, "camMatrix");
-		
+
+		std::cout << TestCollider.CheckCollision(camera.Position.x, camera.Position.z)
+				  << "| CurrentPos: "
+				  << camera.Position.x << ", " << camera.Position.z << '\n';
+
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
 		DrawTriVAO(triangleVAO, 18);
 		DrawTriVAO(groundVAO, 6);

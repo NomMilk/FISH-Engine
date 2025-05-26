@@ -1,15 +1,16 @@
-#include "BoxCollider.h";
+#include "BoxCollider.h"
 
-BoxCollider::BoxCollider(float LT, float LB, float RT, float RB)
-	:ColliderVertex(glm::vec4(LT, LB, RT, RB))
+BoxCollider::BoxCollider(float x, float y, float Height, float Width)
+	:ColliderVertex(glm::vec4(x, y, Height, Width))
 {}
 
-bool BoxCollider::CheckCollision(BoxCollider _collider)
+bool BoxCollider::CheckCollision(float x, float y)
 {
-	
-}
-
-bool BoxCollider::CheckCollision(float LT, float LB, float RT, float RB)
-{
-
+	return
+	(
+		x < ColliderVertex.x + ColliderVertex.w &&
+		x > ColliderVertex.x &&
+		y < ColliderVertex.y + ColliderVertex.z &&
+		y > ColliderVertex.y
+	);
 }
