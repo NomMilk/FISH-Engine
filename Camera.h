@@ -12,6 +12,7 @@
 #include <glm/gtx/vector_angle.hpp>
 
 #include "shaderClass.h"
+#include "BoxCollider.h"
 
 //honestly this is shaping more out to be a player than a camera ;-;
 class Camera
@@ -39,6 +40,7 @@ class Camera
 		void updateMatrix(float FOVdeg, float nearPlane, float farPlane);
 
 		void Inputs(GLFWwindow* window, float deltaTime);
+		void CollisionPush(BoxCollider* collider);
 };
 
 #endif

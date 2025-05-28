@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "BoxCollider.h"
 
 Camera::Camera(int width, int height, glm::vec3 position)
 {
@@ -96,5 +97,13 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 	{
 		firstClick = false;
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+}
+
+void Camera::CollisionPush(BoxCollider* collider)
+{
+	if (collider->CheckCollision(Position.x, Position.y))
+	{
+
 	}
 }
