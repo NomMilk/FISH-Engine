@@ -71,7 +71,7 @@ void DrawTriVAO(VAO& drawnVAO, size_t indices)
 //actual Game
 int main()
 {
-	BoxCollider TestCollider(2.0f, 2.0f, 10.0f, 10.0f);
+	BoxCollider TestCollider(-2.5f, -1.0f, 3.0f, 3.0f);
 
 	glfwInit();
 
