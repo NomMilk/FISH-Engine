@@ -71,7 +71,7 @@ void DrawTriVAO(VAO& drawnVAO, size_t indices)
 //actual Game
 int main()
 {
-	BoxCollider TestCollider(2.0f, 2.0f, 2.0f, 2.0f);
+	BoxCollider TestCollider(2.0f, 2.0f, 10.0f, 10.0f);
 
 	glfwInit();
 
@@ -182,10 +182,8 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		camera.Matrix(shaderProgram, "camMatrix");
-
-		std::cout << TestCollider.CheckCollision(camera.Position.x, camera.Position.z)
-				  << "| CurrentPos: "
-				  << camera.Position.x << ", " << camera.Position.z << '\n';
+		
+		camera.CollisionPush(&TestCollider);
 
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
 		DrawTriVAO(triangleVAO, 18);

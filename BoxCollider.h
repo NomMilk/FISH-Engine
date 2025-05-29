@@ -1,11 +1,18 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <algorithm>
+
+struct CollisionResult {
+	bool collided;
+	float pushX;
+	float pushZ;
+};
 
 class BoxCollider
 {
 	public:
 		BoxCollider(float x, float y, float Height, float Width);
-		bool CheckCollision(float x, float y);
+		CollisionResult CheckCollision(float x, float y);
 
 		const glm::vec4 GetBounds() const { return ColliderVertex; };
 
