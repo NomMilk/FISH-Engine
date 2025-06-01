@@ -140,7 +140,7 @@ int main()
 	//first width and height is ratio and next two is the max height and width
 	glfwSetWindowSizeLimits(window, width, height, width, height);
 	glfwMakeContextCurrent(window);
-	
+
 	gladLoadGL();
 
 	glViewport(0, 0, width, height);

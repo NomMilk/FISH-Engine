@@ -29,7 +29,7 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 	//Camera Movement
 	if (firstClick)
 	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		double mouseX;
 		double mouseY;
