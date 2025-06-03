@@ -16,6 +16,7 @@
 #include "VBO.h"
 #include "EBO.h"
 #include "Camera.h"
+#include "SoundManager.h"
 
 const unsigned int width = 1000;
 const unsigned int height = 800;
