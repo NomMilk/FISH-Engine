@@ -73,6 +73,7 @@ void DrawTriVAO(VAO& drawnVAO, size_t indices)
 int main()
 {
 	BoxCollider TestCollider(-2.5f, -1.0f, 3.0f, 3.0f);
+	SoundManager soundPlayer("bubbles.mp3");
 
 	glfwInit();
 

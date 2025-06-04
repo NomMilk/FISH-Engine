@@ -2,6 +2,10 @@
 
 #include <utility>
 
+SoundManager::SoundManager(std::filesystem::path&& soundLocation)
+	:SoundBuffer(soundLocation), Sound(SoundBuffer)
+{}
+
 SoundManager::SoundManager(const sf::SoundBuffer& sound)
 	:SoundBuffer(sound), Sound(SoundBuffer)
 {}
@@ -13,4 +17,19 @@ SoundManager::SoundManager(sf::SoundBuffer&& sound)
 void SoundManager::Play()
 {
 	Sound.play();
+}
+
+void SoundManager::Switch(sf::SoundBuffer& sound)
+{
+	Sound.setBuffer(sound);
+}
+
+void SoundManager::Stop()
+{
+	Sound.stop();
+}
+
+void SoundManager::Loop()
+{
+	Sound.setLooping(true);
 }

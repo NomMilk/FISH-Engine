@@ -1,14 +1,16 @@
 #pragma once
 
 #include <SFML/Audio.hpp>
+
 #include <string>
+#include <filesystem>
 
 class SoundManager 
 {
 	public:
 		SoundManager() = delete;
 
-		SoundManager(const std::string soundLocation);
+		SoundManager(std::filesystem::path&& soundLocation);
 
 		//not sure if these are neccessary
 		//since I don't think main has access to the audio lib
@@ -18,7 +20,6 @@ class SoundManager
 
 		void Play();
 		void Switch(sf::SoundBuffer& sound);
-		void Switch(sf::SoundBuffer&& sound);
 		void Stop();
 		void Loop();
 
