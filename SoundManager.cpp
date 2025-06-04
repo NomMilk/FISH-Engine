@@ -3,7 +3,7 @@
 #include <utility>
 
 SoundManager::SoundManager(std::filesystem::path&& soundLocation)
-	:SoundBuffer(soundLocation), Sound(SoundBuffer)
+	:SoundBuffer(std::move(soundLocation)), Sound(SoundBuffer)
 {}
 
 SoundManager::SoundManager(const sf::SoundBuffer& sound)
