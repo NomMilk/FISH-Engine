@@ -169,7 +169,7 @@
     <Image Include="goldfish.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\..\..\..\Bubble.mp3" />
+    <Media Include="Bubble.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

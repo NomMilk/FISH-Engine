@@ -1,11 +1,16 @@
 #include "SoundManager.h"
 
 #include <utility>
+#include <iostream>
 
 SoundManager::SoundManager(const char* soundLocation)
 	:Sound(SoundBuffer)
 {
-	SoundBuffer.loadFromFile(soundLocation);
+	bool Loaded = SoundBuffer.loadFromFile(soundLocation);
+	if (!Loaded)
+	{
+		std::cerr << "Failed to load from path: " << soundLocation << '\n';
+	}
 	Sound.setBuffer(SoundBuffer);
 }
 

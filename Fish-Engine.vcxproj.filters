@@ -98,7 +98,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\..\..\..\Bubble.mp3">
+    <Media Include="Bubble.mp3">
       <Filter>Resource Files\Sounds</Filter>
     </Media>
   </ItemGroup>
