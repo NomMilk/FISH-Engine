@@ -10,13 +10,7 @@ class SoundManager
 	public:
 		SoundManager() = delete;
 
-		SoundManager(std::filesystem::path&& soundLocation);
-
-		//not sure if these are neccessary
-		//since I don't think main has access to the audio lib
-		// i'll keep em for now
-		SoundManager(const sf::SoundBuffer& sound);
-		SoundManager(sf::SoundBuffer&& sound);
+		SoundManager(const char* soundLocation);
 
 		void Play();
 		void Switch(sf::SoundBuffer& sound);
