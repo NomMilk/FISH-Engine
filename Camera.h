@@ -33,8 +33,13 @@ class Camera
 
 		float speed = 10.0f;
 		float sensitivity = 300.0f;
+		
+		//this is for gravity
+		float Acceleration = 9.81f;
+		float Velocity = 0.0f;
 
 		Camera(int width, int height, glm::vec3 position);
+		void RigidBody(float deltaTime);
 
 		void Matrix(Shader& shader, const char* uniform);
 		void updateMatrix(float FOVdeg, float nearPlane, float farPlane);
