@@ -99,10 +99,10 @@ int main()
 
 	GLfloat groundVertices[] =
 	{
-	   -20.0f, -2.0f,  20.0f,  0.28f, 0.75f, 0.00f,
-	   -20.0f, -2.0f, -20.0f,  0.28f, 0.75f, 0.00f,
-		20.0f, -2.0f, -20.0f,  0.28f, 0.75f, 0.00f,
-		20.0f, -2.0f,  20.0f,  0.28f, 0.75f, 0.00f,
+	   -20.0f, -2.0f,  20.0f,  0.702f, 0.647f, 0.333f,
+	   -20.0f, -2.0f, -20.0f,  0.702f, 0.647f, 0.333f,
+		20.0f, -2.0f, -20.0f,  0.702f, 0.647f, 0.333f,
+		20.0f, -2.0f,  20.0f,  0.702f, 0.647f, 0.333f,
 	};
 
 	GLuint groundIndices[] =
@@ -175,7 +175,7 @@ int main()
 		deltaTime = elapsed.count();
 		lastTick = now;
 
-		glClearColor(0.51f, 0.784f, 0.898f, 1.0f);
+		glClearColor(0.549f, 0.671f, 0.631f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.Activate();

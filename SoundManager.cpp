@@ -6,9 +6,7 @@
 SoundManager::SoundManager(const char* soundLocation)
 	:Sound(SoundBuffer)
 {
-	bool Loaded = SoundBuffer.loadFromFile(soundLocation);
-	if (!Loaded)
-	{
+	if (!SoundBuffer.loadFromFile(soundLocation)) {
 		std::cerr << "Failed to load from path: " << soundLocation << '\n';
 	}
 	Sound.setBuffer(SoundBuffer);
