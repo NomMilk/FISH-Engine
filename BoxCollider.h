@@ -7,12 +7,16 @@ struct CollisionResult {
 	float pushX;
 	float pushY;
 	float pushZ;
+
+	CollisionResult():collided(false), pushX(0.0f), pushY(0.0f), pushZ(0.0f)
+	{}
+
 };
 
 class BoxCollider
 {
 	public:
-		BoxCollider(float x, float y, float Z, float XScale, float YScale, float ZScale);
+		BoxCollider(float x, float y, float z, float Height, float Width, float Depth);
 		CollisionResult CheckCollision(float x, float y, float z);
 
 	private:
