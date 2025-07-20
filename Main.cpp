@@ -72,7 +72,8 @@ void DrawTriVAO(VAO& drawnVAO, size_t indices)
 //actual Game
 int main()
 {
-	BoxCollider TestCollider(-2.5f, -1.0f, 3.0f, 3.0f);
+	BoxCollider TestCollider(-2.5f, -1.0f, 0.0f, 1.0f, 1.0f, 100.0f);
+	BoxCollider GroundCollider(-2.5f, -5.0f, 3.0f, 1000.0f, 1000.0f, 1000.0f);
 	SoundManager soundPlayer("Bubble.mp3");
 	soundPlayer.Loop();
 	soundPlayer.Play();
@@ -185,11 +186,12 @@ int main()
 		//player Init
 		camera.Inputs(window, deltaTime);
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
-		camera.RigidBody(deltaTime);
+		//camera.RigidBody(deltaTime);
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		
 		camera.CollisionPush(&TestCollider);
+		//camera.CollisionPush(&GroundCollider);
 
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
 		DrawTriVAO(triangleVAO, 18);

@@ -5,17 +5,17 @@
 struct CollisionResult {
 	bool collided;
 	float pushX;
+	float pushY;
 	float pushZ;
 };
 
 class BoxCollider
 {
 	public:
-		BoxCollider(float x, float y, float Height, float Width);
-		CollisionResult CheckCollision(float x, float y);
-
-		const glm::vec4 GetBounds() const { return ColliderVertex; };
+		BoxCollider(float x, float y, float Z, float XScale, float YScale, float ZScale);
+		CollisionResult CheckCollision(float x, float y, float z);
 
 	private:
-		glm::vec4 ColliderVertex;
+		glm::vec3 ColliderVertex;
+		glm::vec3 ColliderScale;
 };

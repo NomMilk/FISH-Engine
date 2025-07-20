@@ -108,12 +108,12 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 
 void Camera::CollisionPush(BoxCollider* collider)
 {
-	CollisionResult result = collider->CheckCollision(Position.x, Position.z);
-	std::cout << result.collided << ',' << result.pushX << result.pushZ << '\n';
+	CollisionResult result = collider->CheckCollision(Position.x, Position.z, Position.y);
+	std::cout << result.collided << ',' << result.pushX << result.pushY << '\n';
 	std::cout << Position.x << ',' << Position.z << '\n';
 	
 	if (result.collided)
 	{
-		Position += glm::vec3(result.pushX, 0.0f, result.pushZ);
+		Position += glm::vec3(result.pushX, result.pushZ, result.pushY);
 	}
 }
