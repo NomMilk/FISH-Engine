@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 INCLUDES = -I./Libraries/include
-LDFLAGS = -L./Libraries/lib -lglfw -lGL -ldl
+LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system
 
 # Source files
 SRCS = Main.cpp \
@@ -12,11 +12,12 @@ SRCS = Main.cpp \
        VBO.cpp \
        EBO.cpp \
        shaderClass.cpp \
+       SoundManager.cpp \
        glad.c \
        stb.cpp
 
 # Resource files
-RESOURCES = Default.vert Default.frag goldfish.jpg
+RESOURCES = Default.vert Default.frag goldfish.jpg Bubble.mp3
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

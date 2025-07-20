@@ -74,6 +74,8 @@ int main()
 {
 	BoxCollider TestCollider(-2.5f, -1.0f, 3.0f, 3.0f);
 	SoundManager soundPlayer("Bubble.mp3");
+	soundPlayer.Loop();
+	soundPlayer.Play();
 
 	glfwInit();
 
