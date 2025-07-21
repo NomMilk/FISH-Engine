@@ -203,7 +203,6 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		
 		camera.CollisionPush(&TestCollider);
-		//camera.CollisionPush(&GroundCollider);
 
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
 		DrawTriVAO(triangleVAO, 18);
