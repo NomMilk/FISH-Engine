@@ -162,6 +162,9 @@ int main()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	//create / load textures
 	Texture goldFish("goldfish.jpg", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
 	goldFish.texUnit(shaderProgram, "tex0", 0);
@@ -171,7 +174,7 @@ int main()
 	// 3d model loader
 	Model* ourModel = nullptr;
 	try {
-		ourModel = new Model("sonic.obj");
+		ourModel = new Model("models/sonic.obj");
 	} catch (const std::exception& e) {
 		std::cerr << "Failed to load model: " << e.what() << std::endl;
 	}
@@ -218,7 +221,7 @@ int main()
 			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 			try {
-				ourModel->Draw();
+				ourModel->Draw(shaderProgram);
 			} catch (const std::exception& e) {
 				std::cerr << "Error drawing model: " << e.what() << std::endl;
 			}
