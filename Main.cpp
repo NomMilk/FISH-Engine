@@ -17,6 +17,7 @@
 #include "EBO.h"
 #include "Camera.h"
 #include "SoundManager.h"
+#include "Model.h"
 
 const unsigned int width = 1000;
 const unsigned int height = 800;
@@ -74,7 +75,7 @@ int main()
 {
 	BoxCollider TestCollider(-2.5f, -1.0f, 0.0f, 1.0f, 1.0f, 100.0f);
 	BoxCollider GroundCollider(-2.5f, -5.0f, 3.0f, 1000.0f, 1000.0f, 1000.0f);
-	SoundManager soundPlayer("Bubble.mp3");
+	SoundManager soundPlayer("rainbowdash.mp3");
 	soundPlayer.Loop();
 	soundPlayer.Play();
 
@@ -167,6 +168,14 @@ int main()
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	
+	// 3d model loader
+	Model* ourModel = nullptr;
+	try {
+		ourModel = new Model("sonic.obj");
+	} catch (const std::exception& e) {
+		std::cerr << "Failed to load model: " << e.what() << std::endl;
+	}
+	
 	//delta time stuff
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
@@ -190,6 +199,9 @@ int main()
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		
+		glm::mat4 defaultModel = glm::mat4(1.0f);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
+		
 		camera.CollisionPush(&TestCollider);
 		//camera.CollisionPush(&GroundCollider);
 
@@ -200,10 +212,26 @@ int main()
 		goldFish.Bind();
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
 		DrawTriVAO(textureVAO, 6);
+		
+		if (ourModel) {
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			try {
+				ourModel->Draw();
+			} catch (const std::exception& e) {
+				std::cerr << "Error drawing model: " << e.what() << std::endl;
+			}
+		}
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+	if (ourModel) {
+		delete ourModel;
+	}
+	
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
