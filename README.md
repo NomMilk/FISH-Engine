@@ -1,4 +1,4 @@
-<img width="251" height="366" alt="image" src="https://github.com/user-attachments/assets/549c48d2-d1b4-44a0-8612-a9e5ea1fb0d4" />
+<img width="100" alt="image" src="https://github.com/user-attachments/assets/35a68e73-1dcc-43f3-b9ae-4b201f07c5f6" />
 
 ## What is FISH-Engine
 
