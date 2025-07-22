@@ -5,6 +5,11 @@
 #include <unistd.h>
 #include <cctype>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <GL/gl.h>
+
 using namespace std;
 
 Model::Model(const char* path) {
@@ -13,7 +18,6 @@ Model::Model(const char* path) {
 
 Model::~Model() {
     for (auto& mesh : meshes) {
-        glDeleteVertexArrays(1, &mesh.VAO);
         glDeleteBuffers(1, &mesh.VBO);
         glDeleteBuffers(1, &mesh.EBO);
     }
@@ -41,10 +45,27 @@ void Model::Draw(Shader& shader) {
         } else if (!loadedTextures.empty()) {
             loadedTextures[0]->Bind();
         }
+
+        glBindBuffer(GL_ARRAY_BUFFER, mesh.VBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.EBO);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
         
-        glBindVertexArray(mesh.VAO);
         glDrawElements(GL_TRIANGLES, mesh.indexCount, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+        
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }
 
@@ -156,11 +177,9 @@ void Model::processMesh(aiMesh* mesh, const aiScene* scene) {
     newMesh.indexCount = indices.size();
     newMesh.materialIndex = mesh->mMaterialIndex;
     
-    glGenVertexArrays(1, &newMesh.VAO);
+    // OpenGL 2.1 - create VBO and EBO only
     glGenBuffers(1, &newMesh.VBO);
     glGenBuffers(1, &newMesh.EBO);
-    
-    glBindVertexArray(newMesh.VAO);
     
     glBindBuffer(GL_ARRAY_BUFFER, newMesh.VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
@@ -168,16 +187,9 @@ void Model::processMesh(aiMesh* mesh, const aiScene* scene) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, newMesh.EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
     
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-    
-    glBindVertexArray(0);
+    // Unbind buffers
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     meshes.push_back(newMesh);
 } 

@@ -82,6 +82,16 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		Position += speed * side * deltaTime;
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		Position += speed * Up * deltaTime;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	{
+		Position -= speed * Up * deltaTime;
+	}
+
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		if (!firstClick) firstClick = true;

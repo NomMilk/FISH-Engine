@@ -8,7 +8,8 @@
 #include "Texture.h"
 
 struct Mesh {
-    unsigned int VAO, VBO, EBO;
+    // OpenGL 2.1 doesn't use VAOs, so we just store VBO and EBO
+    unsigned int VBO, EBO;
     unsigned int indexCount;
     unsigned int materialIndex;
 };

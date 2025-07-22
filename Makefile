@@ -18,7 +18,7 @@ SRCS = Main.cpp \
        stb.cpp
 
 # Resource files
-RESOURCES = Default.vert Default.frag goldfish.jpg rainbowdash.mp3 models/sonic.obj
+RESOURCES = Default.vert Default.frag goldfish.jpg rainbowdash.mp3 models/stationgarden.obj
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

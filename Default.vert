@@ -1,11 +1,11 @@
-#version 330 core
+#version 120
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTex;
+attribute vec3 aPos;
+attribute vec3 aColor;
+attribute vec2 aTex;
 
-out vec3 vertexColor;
-out vec2 texCoords;
+varying vec3 vertexColor;
+varying vec2 texCoords;
 
 uniform mat4 camMatrix;
 uniform mat4 model;

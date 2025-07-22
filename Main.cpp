@@ -7,6 +7,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <GL/gl.h>
+
 #include <stb/stb_image.h>
 
 #include "Texture.h"
@@ -24,50 +29,66 @@ const unsigned int height = 800;
 
 //VAO util
 //THIS ONLY WORKS FOR STATIC OBJECTS, THIS DOES NOT DELETE THE VAO WHEN IT'S NOT USED!!!
-VAO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
+VBO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
 {
-	VAO vao;
-	vao.Bind();
-
 	VBO vbo(vertices, vertexSize);
 	EBO ebo(indices, indexSize);
 	
-	//bind position
-	vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	//bind colors
-	vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-
-	vao.Unbind();
-	vbo.Unbind();
-	ebo.Unbind();
-
-	return vao;
+	// In OpenGL 2.1, we don't use VAOs, so we just return the VBO
+	// Attribute setup will be done before drawing
+	
+	return vbo;
 }
 
-VAO VAOLinkerTexture(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
+VBO VAOLinkerTexture(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
 {
-	VAO textureVAO;
-	textureVAO.Bind();
-
 	VBO textureVBO(vertices, vertexSize);
 	EBO textureEBO(indices, indexSize);
 	
-	textureVAO.LinkAttrib(textureVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-	textureVAO.LinkAttrib(textureVBO, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	textureVAO.LinkAttrib(textureVBO, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-
-	textureVAO.Unbind();
-	textureVBO.Unbind();
-	textureEBO.Unbind();
+	// In OpenGL 2.1, we don't use VAOs, so we just return the VBO
+	// Attribute setup will be done before drawing
 	
-	return textureVAO;
+	return textureVBO;
 }
 
-void DrawTriVAO(VAO& drawnVAO, size_t indices)
+void DrawTriVAO(VBO& vbo, EBO& ebo, size_t indices, bool hasTexture)
 {
-	drawnVAO.Bind();
+	vbo.Bind();
+	ebo.Bind();
+	
+	// Set up vertex attributes using shader attributes instead of fixed-function pipeline
+	// This works with OpenGL 2.1 via shaders
+	if (hasTexture) {
+		// For textured vertices (position, color, texcoords)
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+		
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(2);
+	}
+	else {
+		// For regular vertices (position, color)
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+	}
+	
 	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
-	drawnVAO.Unbind();
+	
+	// Disable vertex arrays
+	if (hasTexture) {
+		glDisableVertexAttribArray(2);
+	}
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(0);
+	
+	ebo.Unbind();
+	vbo.Unbind();
 }
 
 //actual Game
@@ -81,9 +102,8 @@ int main()
 
 	glfwInit();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	//vertices position 
 	GLfloat textureVertices[] =
@@ -153,10 +173,13 @@ int main()
 
 	Shader shaderProgram("Default.vert", "Default.frag");
 	
-	VAO groundVAO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
-	VAO triangleVAO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
-	VAO textureVAO = VAOLinkerTexture(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
+	VBO groundVBO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
+	VBO triangleVBO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
+	VBO textureVBO = VAOLinkerTexture(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
 
+	EBO groundEBO(groundIndices, sizeof(groundIndices));
+	EBO triangleEBO(indices, sizeof(indices));
+	EBO textureEBO(textureIndices, sizeof(textureIndices));
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -174,7 +197,7 @@ int main()
 	// 3d model loader
 	Model* ourModel = nullptr;
 	try {
-		ourModel = new Model("models/sonic.obj");
+		ourModel = new Model("models/stationgarden.obj");
 	} catch (const std::exception& e) {
 		std::cerr << "Failed to load model: " << e.what() << std::endl;
 	}
@@ -197,7 +220,7 @@ int main()
 		
 		//player Init
 		camera.Inputs(window, deltaTime);
-		camera.updateMatrix(45.0f, 0.1f, 100.0f);
+		camera.updateMatrix(90.0f, 0.1f, 100.0f);
 		//camera.RigidBody(deltaTime);
 
 		camera.Matrix(shaderProgram, "camMatrix");
@@ -208,12 +231,12 @@ int main()
 		camera.CollisionPush(&TestCollider);
 
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
-		DrawTriVAO(triangleVAO, 18);
-		DrawTriVAO(groundVAO, 6);
+		DrawTriVAO(triangleVBO, triangleEBO, 18, false);
+		DrawTriVAO(groundVBO, groundEBO, 6, false);
 		
 		goldFish.Bind();
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
-		DrawTriVAO(textureVAO, 6);
+		DrawTriVAO(textureVBO, textureEBO, 6, true);
 		
 		if (ourModel) {
 			glm::mat4 model = glm::mat4(1.0f);
