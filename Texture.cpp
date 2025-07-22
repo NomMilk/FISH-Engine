@@ -21,6 +21,7 @@ Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, 
 	glActiveTexture(slot);
 	glBindTexture(texType, ID);
 
+	// Use GL_NEAREST for both filters to avoid mipmap issues on older hardware
 	glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -37,7 +38,12 @@ Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, 
 		internalFormat = GL_RGB;
 
 	glTexImage2D(texType, 0, internalFormat, widthImg, heightImg, 0, format, pixleType, bytes);
-	glGenerateMipmap(texType);
+	
+	try {
+		glGenerateMipmap(texType);
+	} catch (...) {
+		std::cout << "Warning: Mipmap generation failed for " << image << ". Using GL_NEAREST filtering." << std::endl;
+	}
 
 	stbi_image_free(bytes);
 	glBindTexture(texType, 0);
