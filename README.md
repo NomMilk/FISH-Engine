@@ -8,7 +8,7 @@ It’s designed for:
 - Educational projects focusing on **classic graphics programming**
 - Simple indie games and tools with a **lightweight OpenGL core**
 
-### Build Instructions
+## Build Instructions
 # Clone the repo
 git clone https://github.com/NomMilk/FISH-Engine
 cd FISH-Engine
