@@ -13,5 +13,4 @@ It’s designed for:
 - Clone the repository
 - Download and install dependencies manually
 - Build using the provided Makefile
-
-./bin/fish_engine
+- Run the test project
