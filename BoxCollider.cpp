@@ -37,13 +37,13 @@ CollisionResult BoxCollider::CheckCollision(float x, float y, float z)
         }
         else if (minY <= minX && minY <= minZ) {
             result.pushX = 0.0f;
-            result.pushY = 0.0f; 
+            result.pushY = 0.0f;
             result.pushZ = (top < bottom) ? -top : bottom;
         }
         else {
             result.pushX = 0.0f;
             result.pushY = (front < back) ? -front : back;
-            result.pushZ = 0.0f;
+			result.pushZ = 0.0f;
         }
     }
     else {
