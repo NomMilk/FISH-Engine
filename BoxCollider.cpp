@@ -25,13 +25,25 @@ CollisionResult BoxCollider::CheckCollision(float x, float y, float z)
         float front = z - ColliderVertex.z;
         float back = (ColliderVertex.z + ColliderScale.z) - z;;
 
-        if (std::min(left, right) < std::min(top, bottom)) {
+        float minX = std::min(left, right);
+        float minY = std::min(top, bottom);
+        float minZ = std::min(front, back);
+
+        // Find the axis with the minimum penetration
+        if (minX <= minY && minX <= minZ) {
             result.pushX = (left < right) ? -left : right;
+            result.pushY = 0.0f;
+            result.pushZ = 0.0f;
+        }
+        else if (minY <= minX && minY <= minZ) {
+            result.pushX = 0.0f;
+            result.pushY = (top < bottom) ? -top : bottom;
             result.pushZ = 0.0f;
         }
         else {
             result.pushX = 0.0f;
-            result.pushZ = (top < bottom) ? -top : bottom;
+            result.pushY = 0.0f;
+            result.pushZ = (front < back) ? -front : back;
         }
     }
     else {
