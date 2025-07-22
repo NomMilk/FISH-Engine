@@ -5,14 +5,14 @@
 
 Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixleType)
 {
-		type = texType;
-		path = std::string(image);
+	type = texType;
+	path = std::string(image);
 
-		int widthImg, heightImg, numColCh;
-		stbi_set_flip_vertically_on_load(true);
-		unsigned char* bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
+	int widthImg, heightImg, numColCh;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
 
-		if (!bytes) {
+	if (!bytes) {
 		throw std::runtime_error("Failed to load texture: " + std::string(image) + " - " + std::string(stbi_failure_reason()));
 	}
 
