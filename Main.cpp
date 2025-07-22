@@ -17,7 +17,6 @@
 #include "Texture.h"
 #include "BoxCollider.h"
 #include "shaderClass.h"
-#include "VAO.h"
 #include "VBO.h"
 #include "EBO.h"
 #include "Camera.h"

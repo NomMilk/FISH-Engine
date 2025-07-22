@@ -8,7 +8,6 @@ SRCS = Main.cpp \
        BoxCollider.cpp \
        Camera.cpp \
        Texture.cpp \
-       VAO.cpp \
        VBO.cpp \
        EBO.cpp \
        shaderClass.cpp \
