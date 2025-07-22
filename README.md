@@ -9,9 +9,7 @@ It’s designed for:
 - Simple indie games and tools with a **lightweight OpenGL core**
 
 ## Build Instructions
-git clone https://github.com/NomMilk/FISH-Engine
-cd FISH-Engine
-
+- Clone the repository
 - Download and install dependencies manually
 - Build using the provided Makefile
 
