@@ -13,10 +13,8 @@ It’s designed for:
 git clone https://github.com/NomMilk/FISH-Engine
 cd FISH-Engine
 
-# Download and install dependencies manually
+-Download and install dependencies manually
+-Build using the provided Makefile
 
-# Build using the provided Makefile
-make
-
-# Run the demo or your game
-./bin/fish_demo
+-Run the demo or your game
+./bin/fish_engine
