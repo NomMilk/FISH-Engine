@@ -12,7 +12,7 @@ It’s designed for:
 git clone https://github.com/NomMilk/FISH-Engine
 cd FISH-Engine
 
--Download and install dependencies manually
--Build using the provided Makefile
+- Download and install dependencies manually
+- Build using the provided Makefile
 
 ./bin/fish_engine
