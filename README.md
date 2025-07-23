@@ -10,14 +10,14 @@ It’s designed for:
 - Simple indie games and tools with a **lightweight OpenGL core**
 
 ## Libraries
-GLFW
-OpenGL
-SFML (For audio primarily)
-Assimp (3d model importer)
-TinyXML-2 (xml parser to store map data in xml files)
-GLM
-stb_image
-GLAD
+GLFW <br>
+OpenGL <br>
+SFML (For audio primarily) <br>
+Assimp (3d model importer) <br>
+TinyXML-2 (xml parser to store map data in xml files) <br>
+GLM <br>
+stb_image <br>
+GLAD <br>
 
 To compile goodly, you must have these installed on your system.
 
