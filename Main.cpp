@@ -171,7 +171,7 @@ int main()
 
 	glViewport(0, 0, width, height);
 
-	Shader shaderProgram("Default.vert", "Default.frag");
+	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
 	
 	VBO groundVBO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
 	VBO triangleVBO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
