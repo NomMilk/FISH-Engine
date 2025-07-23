@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
-INCLUDES = -I./Libraries/include
+INCLUDES = -I./Libraries/Include
 LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system -lassimp -ltinyxml2
 
 # Source files
