@@ -1,3 +1,6 @@
+#ifndef MODEL_H
+#define MODEL_H
+
 #include <string>
 #include <vector>
 #include <assimp/Importer.hpp>
@@ -30,3 +33,5 @@ class Model {
         void processMesh(aiMesh* mesh, const aiScene* scene);
         void loadMaterialTextures(aiMaterial* mat, aiTextureType type, unsigned int materialIndex);
 };
+
+#endif // MODEL_H

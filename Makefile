@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 INCLUDES = -I./Libraries/include
-LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system -lassimp
+LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system -lassimp -ltinyxml2
 
 # Source files
 SRCS = Main.cpp \
@@ -13,11 +13,12 @@ SRCS = Main.cpp \
        shaderClass.cpp \
        SoundManager.cpp \
        Model.cpp \
+       modelLoader.cpp \
        glad.c \
        stb.cpp
 
 # Resource files
-RESOURCES = Default.vert Default.frag goldfish.jpg rainbowdash.mp3 models/stationgarden.obj
+RESOURCES = Default.vert Default.frag goldfish.jpg rainbowdash.mp3 models/stationgarden.obj models/sonic.obj models/sonic.mtl example.xml
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
@@ -39,6 +40,8 @@ all: $(TARGET) copy_resources
 # Copy resources to bin directory
 copy_resources: $(RESOURCES)
 	cp $(RESOURCES) $(BIN_DIR)/
+	mkdir -p $(BIN_DIR)/models
+	cp -r models/* $(BIN_DIR)/models/
 
 # Linking
 $(TARGET): $(addprefix $(OBJ_DIR)/,$(OBJS))

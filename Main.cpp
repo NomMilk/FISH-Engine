@@ -22,6 +22,7 @@
 #include "Camera.h"
 #include "SoundManager.h"
 #include "Model.h"
+#include "modelLoader.h"
 
 const unsigned int width = 1000;
 const unsigned int height = 800;
@@ -193,12 +194,12 @@ int main()
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	
-	// 3d model loader
-	Model* ourModel = nullptr;
-	try {
-		ourModel = new Model("models/stationgarden.obj");
-	} catch (const std::exception& e) {
-		std::cerr << "Failed to load model: " << e.what() << std::endl;
+	// load models from XML
+	ModelLoader modelLoader;
+	if (!modelLoader.loadFromXML("example.xml")) {
+		std::cerr << "Failed to load models from XML file" << std::endl;
+	} else {
+		std::cout << "Successfully loaded " << modelLoader.getModelCount() << " models from XML" << std::endl;
 	}
 	
 	//delta time stuff
@@ -237,23 +238,10 @@ int main()
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
 		DrawTriVAO(textureVBO, textureEBO, 6, true);
 		
-		if (ourModel) {
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			try {
-				ourModel->Draw(shaderProgram);
-			} catch (const std::exception& e) {
-				std::cerr << "Error drawing model: " << e.what() << std::endl;
-			}
-		}
+		modelLoader.drawModels(shaderProgram);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-	}
-	if (ourModel) {
-		delete ourModel;
 	}
 	
 	glfwDestroyWindow(window);
