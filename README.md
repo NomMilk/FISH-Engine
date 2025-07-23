@@ -9,6 +9,18 @@ It’s designed for:
 - Educational projects focusing on **classic graphics programming**
 - Simple indie games and tools with a **lightweight OpenGL core**
 
+## Libraries
+GLFW
+OpenGL
+SFML (For audio primarily)
+Assimp (3d model importer)
+TinyXML-2 (xml parser to store map data in xml files)
+GLM
+stb_image
+GLAD
+
+To compile goodly, you must have these installed on your system.
+
 ## Build Instructions
 - Clone the repository
 - Download and install dependencies manually
