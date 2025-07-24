@@ -219,6 +219,9 @@ int main()
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
 
+	//checking every other frame thing that evan told me about
+	bool physicsCheck = false;
+
 	while (!glfwWindowShouldClose(window))
 	{
 		auto now = std::chrono::system_clock::now();
@@ -234,14 +237,19 @@ int main()
 		//player Init
 		camera.Inputs(window, deltaTime);
 		camera.updateMatrix(90.0f, 0.1f, 100.0f);
-		camera.RigidBody(deltaTime);
+
+		physicsCheck = !physicsCheck;
+		if (physicsCheck)
+		{
+			camera.RigidBody(deltaTime);
+			camera.CollisionPush(&GroundCollider);
+		}
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		
-		camera.CollisionPush(&GroundCollider);
 
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
 		DrawTriVAO(triangleVBO, triangleEBO, 18, false);
