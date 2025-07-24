@@ -27,6 +27,19 @@
 const unsigned int width = 1000;
 const unsigned int height = 800;
 
+Camera* globalCamera = nullptr;
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+    
+    if (globalCamera != nullptr) {
+        globalCamera->width = width;
+        globalCamera->height = height;
+        globalCamera->updateMatrix(90.0f, 0.1f, 100.0f);
+    }
+}
+
 //VAO util
 //THIS ONLY WORKS FOR STATIC OBJECTS, THIS DOES NOT DELETE THE VAO WHEN IT'S NOT USED!!!
 VBO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
@@ -162,9 +175,9 @@ int main()
 		return -1;
 	}
 
-	//first width and height is ratio and next two is the max height and width
-	glfwSetWindowSizeLimits(window, width, height, width, height);
 	glfwMakeContextCurrent(window);
+	
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	gladLoadGL();
 
@@ -192,6 +205,7 @@ int main()
 	goldFish.texUnit(shaderProgram, "tex0", 0);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+	globalCamera = &camera;
 	
 	// load models from XML
 	ModelLoader modelLoader;
@@ -243,6 +257,7 @@ int main()
 		glfwPollEvents();
 	}
 	
+	globalCamera = nullptr;
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
