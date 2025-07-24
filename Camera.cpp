@@ -21,8 +21,11 @@ void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 
 void Camera::RigidBody(float deltaTime)
 {
-	Velocity += Acceleration * deltaTime;
 	Position.y -= Velocity * deltaTime;
+	//max velocity
+	//we LOVE magic numbers
+	if (Velocity >= 120) return;
+	Velocity += Acceleration * deltaTime;
 }
 
 void Camera::Matrix(Shader& shader, const char* uniform)
@@ -84,22 +87,21 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		Position += speed * Up * deltaTime;
+		if (!firstSpace) firstSpace = true;
+		if (wasSpaceClicked) return;
+		Velocity = -10.0f;
+		wasSpaceClicked = true;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
 	{
-		Position -= speed * Up * deltaTime;
+		wasSpaceClicked = false;
 	}
 
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		if (!firstClick) firstClick = true;
 		if (wasMouseClicked) return;
-		//this code is for detecting first click
-		//might be better to use the "Keycallback thingy"
-		//but like i don't want to read the docs so we have this other solution
-		//where we just deletcts if it releases then set it back for the OnClick event
 		std::cout << "Clicked!\n";
 		wasMouseClicked = true;
 	}
@@ -119,11 +121,17 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 void Camera::CollisionPush(BoxCollider* collider)
 {
 	CollisionResult result = collider->CheckCollision(Position.x, Position.z, Position.y);
-	std::cout << result.collided << ',' << result.pushX << result.pushZ << '\n';
+	std::cout << result.collided << ',' << result.pushY << result.pushZ << '\n';
 	std::cout << Position.x << ',' << Position.z << '\n';
 	
 	if (result.collided)
 	{
 		Position += glm::vec3(result.pushX, result.pushY, result.pushZ);
+
+		//if touched ground
+		if (result.pushZ >= 0)
+		{
+			Velocity = 1.0f;
+		}
 	}
 }

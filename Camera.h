@@ -26,6 +26,10 @@ class Camera
 		//controls
 		bool firstClick = false;
 		bool wasMouseClicked = false;
+
+		bool firstSpace = false;
+		bool wasSpaceClicked = false;
+
 		//controls
 
 		int width;
