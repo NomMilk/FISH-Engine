@@ -29,6 +29,7 @@ class Camera
 
 		bool firstSpace = false;
 		bool wasSpaceClicked = false;
+		bool alreadyJumped = false;
 
 		//controls
 

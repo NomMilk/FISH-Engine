@@ -219,9 +219,6 @@ int main()
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
 
-	//checking every other frame thing that evan told me about
-	bool physicsCheck = false;
-
 	while (!glfwWindowShouldClose(window))
 	{
 		auto now = std::chrono::system_clock::now();
@@ -238,12 +235,8 @@ int main()
 		camera.Inputs(window, deltaTime);
 		camera.updateMatrix(90.0f, 0.1f, 100.0f);
 
-		physicsCheck = !physicsCheck;
-		if (physicsCheck)
-		{
-			camera.RigidBody(deltaTime);
-			camera.CollisionPush(&GroundCollider);
-		}
+		camera.RigidBody(deltaTime);
+		camera.CollisionPush(&GroundCollider);
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		

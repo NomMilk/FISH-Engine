@@ -88,10 +88,12 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
+		if (alreadyJumped) return;
 		if (!firstSpace) firstSpace = true;
 		if (wasSpaceClicked) return;
 		Velocity = -10.0f;
 		wasSpaceClicked = true;
+		alreadyJumped = true;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
@@ -133,6 +135,7 @@ void Camera::CollisionPush(BoxCollider* collider)
 		if (result.pushZ >= 0)
 		{
 			Velocity = 1.0f;
+			alreadyJumped = false;
 		}
 	}
 }
