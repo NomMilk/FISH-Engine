@@ -2,7 +2,7 @@
 
 ## What is FISH-Engine
 
-**FISH-Engine**  is a minimal, fast, and retro-style game engine built specifically around **OpenGL 2.1**.
+**FISH-Engine**  is a minimal, and fast game engine built specifically around **OpenGL 2.1**.
 
 It’s designed for:
 - Developers targeting **low-end or older hardware**
