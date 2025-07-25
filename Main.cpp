@@ -117,56 +117,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
-	//vertices position 
-	GLfloat textureVertices[] =
-	{
-		//position//				//color//			//texture//
-		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
-		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
-		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f
-	};
-
-	GLuint textureIndices[] =
-	{
-		0, 2, 1,
-		1, 2, 3
-	};
-
-	GLfloat groundVertices[] =
-	{
-	   -20.0f, -2.0f,  20.0f,  0.702f, 0.647f, 0.333f,
-	   -20.0f, -2.0f, -20.0f,  0.702f, 0.647f, 0.333f,
-		20.0f, -2.0f, -20.0f,  0.702f, 0.647f, 0.333f,
-		20.0f, -2.0f,  20.0f,  0.702f, 0.647f, 0.333f,
-	};
-
-	GLuint groundIndices[] =
-	{
-		0, 2, 1, 
-		0, 3, 2
-	};
-
-	GLfloat vertices[] =
-	{
-	   -2.5f, 0.0f,  0.5f,  0.00f, 0.00f, 1.00f,
-	   -2.5f, 0.0f, -0.5f,  0.00f, 0.00f, 1.00f,
-	   -1.5f, 0.0f, -0.5f,  0.00f, 0.00f, 1.00f,
-	   -1.5f, 0.0f,  0.5f,  0.00f, 0.00f, 1.00f,
-	   -2.0f, 1.0f,  0.0f,  0.00f, 0.00f, 1.00f
-	};
-
-	GLuint indices[] =
-	{
-		0, 1, 2,
-		0, 2, 3,
-		0, 1, 4,
-		1, 2, 4,
-		2, 3, 4,
-		3, 0, 4
-	};
-
-
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
 	if (window == NULL)
 	{
@@ -184,14 +134,6 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
-	
-	VBO groundVBO = VAOLinker(groundVertices, sizeof(groundVertices), groundIndices, sizeof(groundIndices));
-	VBO triangleVBO = VAOLinker(vertices, sizeof(vertices), indices, sizeof(indices));
-	VBO textureVBO = VAOLinkerTexture(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
-
-	EBO groundEBO(groundIndices, sizeof(groundIndices));
-	EBO triangleEBO(indices, sizeof(indices));
-	EBO textureEBO(textureIndices, sizeof(textureIndices));
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -200,10 +142,6 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	//create / load textures
-	Texture goldFish("goldfish.jpg", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
-	goldFish.texUnit(shaderProgram, "tex0", 0);
-
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	globalCamera = &camera;
 	
@@ -242,15 +180,6 @@ int main()
 		
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
-		
-
-		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), false);
-		DrawTriVAO(triangleVBO, triangleEBO, 18, false);
-		DrawTriVAO(groundVBO, groundEBO, 6, false);
-		
-		goldFish.Bind();
-		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
-		DrawTriVAO(textureVBO, textureEBO, 6, true);
 		
 		modelLoader.drawModels(shaderProgram);
 
