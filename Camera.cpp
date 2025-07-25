@@ -86,16 +86,6 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		Position += speed * side * deltaTime;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-	{
-		currentWeapon = Weapons::CROSSBOW;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-	{
-		currentWeapon = Weapons::KATANA;
-	}
-
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
 		if (alreadyJumped) return;
@@ -115,8 +105,6 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 	{
 		if (!firstClick) firstClick = true;
 		if (wasMouseClicked) return;
-		if (currentWeapon == Weapons::CROSSBOW) CrossbowAttack();
-		if (currentWeapon == Weapons::KATANA) KatanaAttack();
 		wasMouseClicked = true;
 	}
 
@@ -130,16 +118,6 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		firstClick = false;
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
-}
-
-void Camera::CrossbowAttack()
-{
-	std::cout << "Crossbow Attack";
-}
-
-void Camera::KatanaAttack()
-{
-	std::cout << "Katana Attack";
 }
 
 void Camera::CollisionPush(BoxCollider* collider)

@@ -22,12 +22,6 @@ class Camera
 		glm::vec3 Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		glm::mat4 cameraMatrix = glm::mat4(1.0f);
-		//weapons
-		enum class Weapons {CROSSBOW, KATANA};
-		Weapons currentWeapon = Weapons::CROSSBOW;
-
-		void CrossbowAttack();
-		void KatanaAttack();
 		
 		//controls
 		bool firstClick = false;
@@ -44,6 +38,11 @@ class Camera
 
 		float speed = 10.0f;
 		float sensitivity = 300.0f;
+
+		float maxLeftTilt = 10.0f;
+		float maxRightTilt = -10.0f;
+
+		float TiltSpeed = 0.01f;
 		
 		//this is for gravity
 		float Acceleration = 9.81f;
