@@ -107,7 +107,7 @@ void DrawTriVAO(VBO& vbo, EBO& ebo, size_t indices, bool hasTexture)
 //actual Game
 int main()
 {
-	BoxCollider GroundCollider(-25.0f, -25.0f, -10.0f, 50.0f, 50.0f, 5.0f);
+	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
 	SoundManager soundPlayer("rainbowdash.mp3");
 	soundPlayer.Loop();
 	soundPlayer.Play();
