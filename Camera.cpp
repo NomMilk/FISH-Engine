@@ -12,8 +12,17 @@ void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
-
-	view = glm::lookAt(Position, Position + Orientation, Up);
+	if (currentTiltSpeed != 0.0f)
+	{
+		float tiltAngle = tiltSpeed;
+		glm::mat4 baseview = glm::lookAt(Position, Position + Orientation, Up);
+		glm::mat4 tilt = glm::rotate(glm::mat4(1.0f), tiltAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+		view = tilt * baseview;
+	}
+	else
+	{
+		view = glm::lookAt(Position, Position + Orientation, Up);
+	}
 	// there was a problem where the aspect ratio was using int division so i updated this
 	projection = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
 
@@ -25,7 +34,7 @@ void Camera::RigidBody(float deltaTime)
 	Position.y -= Velocity * deltaTime;
 	//max velocity
 	//we LOVE magic numbers
-	if (Velocity >= 120) return;
+	if (Velocity >= maxVelocity) return;
 	Velocity += Acceleration * deltaTime;
 }
 
@@ -91,7 +100,7 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		if (alreadyJumped) return;
 		if (!firstSpace) firstSpace = true;
 		if (wasSpaceClicked) return;
-		Velocity = -10.0f;
+		Velocity = -JumpVelocity;
 		wasSpaceClicked = true;
 		alreadyJumped = true;
 	}

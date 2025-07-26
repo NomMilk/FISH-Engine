@@ -30,13 +30,20 @@ class Camera
 		bool firstSpace = false;
 		bool wasSpaceClicked = false;
 		bool alreadyJumped = false;
+		
+		//Tilt
+		float currentTiltSpeed = 0.0f;
+		float tiltSpeed = 0.1f;
+		float maxTilt = 2.5f;
+		bool tiltLeft;
+		bool tiltRight;
 
 		//controls
 
 		int width;
 		int height;
 
-		float speed = 10.0f;
+		float speed = 15.0f;
 		float sensitivity = 300.0f;
 
 		float maxLeftTilt = 10.0f;
@@ -45,8 +52,10 @@ class Camera
 		float TiltSpeed = 0.01f;
 		
 		//this is for gravity
-		float Acceleration = 9.81f;
+		float Acceleration = 25.0f;
+		float JumpVelocity = 15.0f;
 		float Velocity = 0.0f;
+		float maxVelocity = 200.0f;
 
 		Camera(int width, int height, glm::vec3 position);
 		void RigidBody(float deltaTime);
