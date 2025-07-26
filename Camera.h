@@ -32,11 +32,8 @@ class Camera
 		bool alreadyJumped = false;
 		
 		//Tilt
-		float currentTiltSpeed = 0.0f;
-		float tiltSpeed = 0.1f;
-		float maxTilt = 2.5f;
-		bool tiltLeft;
-		bool tiltRight;
+		float currentTilt = 0.0f;
+		float tiltAmount = 0.1f;
 
 		//controls
 
@@ -46,11 +43,6 @@ class Camera
 		float speed = 15.0f;
 		float sensitivity = 300.0f;
 
-		float maxLeftTilt = 10.0f;
-		float maxRightTilt = -10.0f;
-
-		float TiltSpeed = 0.01f;
-		
 		//this is for gravity
 		float Acceleration = 25.0f;
 		float JumpVelocity = 15.0f;
