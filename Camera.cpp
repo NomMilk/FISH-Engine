@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 
+// chat gipity helped me with interpolation
+
 Camera::Camera(int width, int height, glm::vec3 position)
 {
 	Camera::width = width;
@@ -39,6 +41,20 @@ void Camera::RigidBody(float deltaTime)
 	//max velocity
 	if (Velocity < maxVelocity) {
 		Velocity += Acceleration * deltaTime;
+	}
+	
+	// apply horizontal movement velocity
+	Position += moveVelocity * deltaTime;
+	
+	// apply friction to slow down when not actively moving
+	float frictionFactor = 1.0f - std::min(moveFriction * deltaTime, 1.0f);
+	moveVelocity.x *= frictionFactor;
+	moveVelocity.z *= frictionFactor;
+	
+	// clamp very small velocities to zero to prevent sliding
+	if (glm::length(glm::vec2(moveVelocity.x, moveVelocity.z)) < 0.01f) {
+		moveVelocity.x = 0.0f;
+		moveVelocity.z = 0.0f;
 	}
 	
 	// for smoother interpolation between two values
@@ -89,25 +105,40 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 
 	glm::vec3 forward = glm::normalize(glm::vec3(Orientation.x, 0.0f, Orientation.z));
 	glm::vec3 side = glm::normalize(glm::cross(forward, Up));
-
+	
+	glm::vec3 moveDir = glm::vec3(0.0f);
+	
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		Position += speed * forward * deltaTime;
+		moveDir += forward;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		Position -= speed * forward * deltaTime;
+		moveDir -= forward;
 	}
-	
+
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		Position -= speed * side * deltaTime;
+		moveDir -= side;
 	}
-	
+
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		Position += speed * side * deltaTime;
+		moveDir += side;
+	}
+	
+	// normalize the movement direction if moving diagonally
+	if (glm::length(moveDir) > 0.0f)
+	{
+		moveDir = glm::normalize(moveDir);
+		moveVelocity += moveDir * moveAcceleration * deltaTime;
+		float horizontalSpeed = glm::length(glm::vec2(moveVelocity.x, moveVelocity.z));
+		if (horizontalSpeed > maxMoveSpeed)
+		{
+			moveVelocity.x = (moveVelocity.x / horizontalSpeed) * maxMoveSpeed;
+			moveVelocity.z = (moveVelocity.z / horizontalSpeed) * maxMoveSpeed;
+		}
 	}
 	
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)

@@ -37,17 +37,22 @@ class Camera
 		float tiltAmount = 0.05f;
 		float tiltSpeed = 5.0f;
 
-		//controls
+		// jif peanut butter movement
+		glm::vec3 moveVelocity = glm::vec3(0.0f);
+		float moveAcceleration = 150.0f;
+		float moveFriction = 6.0f;
+		float maxMoveSpeed = 35.0f;
 
+		//controls
 		int width;
 		int height;
 
-		float speed = 15.0f;
+		float speed = 35.0f;
 		float sensitivity = 300.0f;
 
 		//this is for gravity
-		float Acceleration = 25.0f;
-		float JumpVelocity = 15.0f;
+		float Acceleration = 40.0f;
+		float JumpVelocity = 18.0f;
 		float Velocity = 0.0f;
 		float maxVelocity = 200.0f;
 
