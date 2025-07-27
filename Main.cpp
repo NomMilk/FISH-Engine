@@ -120,11 +120,11 @@ int main()
 	//vertices position 
 	GLfloat textureVertices[] =
 	{
-		//position//				//color//			//texture//
-		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
-		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
-		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f
+		//position//				//color//
+		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,
+		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,
+		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,
+		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f
 	};
 
 	GLuint textureIndices[] =
@@ -132,6 +132,7 @@ int main()
 		0, 2, 1,
 		1, 2, 3
 	};
+
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
 	if (window == NULL)
 	{
@@ -149,8 +150,11 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
-	VBO textureVBO = VAOLinkerTexture(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
+	Shader lightShader("Shaders/Light.vert", "Shaders/Light.frag");
+
+	VBO textureVBO = VAOLinker(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
 	EBO textureEBO(textureIndices, sizeof(textureIndices));
+	glm::vec4 lightColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -197,9 +201,12 @@ int main()
 		
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
+		glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
+		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		
-		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
-		DrawTriVAO(textureVBO, textureEBO, 6, true);
+		glUniform1i(glGetUniformLocation(lightShader.ID, "useTexture"), false);
+		DrawTriVAO(textureVBO, textureEBO, 6, false);
 		
 		modelLoader.drawModels(shaderProgram);
 
