@@ -117,6 +117,21 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
+	//vertices position 
+	GLfloat textureVertices[] =
+	{
+		//position//				//color//			//texture//
+		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
+		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
+		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
+		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,		1.0f, 1.0f
+	};
+
+	GLuint textureIndices[] =
+	{
+		0, 2, 1,
+		1, 2, 3
+	};
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
 	if (window == NULL)
 	{
@@ -134,6 +149,8 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
+	VBO textureVBO = VAOLinkerTexture(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
+	EBO textureEBO(textureIndices, sizeof(textureIndices));
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -180,6 +197,9 @@ int main()
 		
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
+		
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "useTexture"), true);
+		DrawTriVAO(textureVBO, textureEBO, 6, true);
 		
 		modelLoader.drawModels(shaderProgram);
 
