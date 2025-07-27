@@ -1,5 +1,7 @@
 #include "Camera.h"
 #include "BoxCollider.h"
+#include <iostream>
+#include <cmath>
 
 Camera::Camera(int width, int height, glm::vec3 position)
 {
@@ -8,20 +10,23 @@ Camera::Camera(int width, int height, glm::vec3 position)
 	Position = position;
 }
 
+float lerp(float a, float b, float t) {
+    return a + t * (b - a);
+}
+
 void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
+	
+	view = glm::lookAt(Position, Position + Orientation, Up);
+	
 	if (currentTilt != 0.0f)
 	{
-		glm::mat4 baseview = glm::lookAt(Position, Position + Orientation, Up);
 		glm::mat4 tilt = glm::rotate(glm::mat4(1.0f), currentTilt, glm::vec3(0.0f, 0.0f, 1.0f));
-		view = tilt * baseview;
+		view = tilt * view;
 	}
-	else
-	{
-		view = glm::lookAt(Position, Position + Orientation, Up);
-	}
+	
 	// there was a problem where the aspect ratio was using int division so i updated this
 	projection = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
 
@@ -32,8 +37,17 @@ void Camera::RigidBody(float deltaTime)
 {
 	Position.y -= Velocity * deltaTime;
 	//max velocity
-	if (Velocity >= maxVelocity) return;
-	Velocity += Acceleration * deltaTime;
+	if (Velocity < maxVelocity) {
+		Velocity += Acceleration * deltaTime;
+	}
+	
+	// for smoother interpolation between two values
+	if (fabs(currentTilt - targetTilt) > 0.0001f) {
+		float factor = std::min(1.0f, tiltSpeed * deltaTime);
+		currentTilt = lerp(currentTilt, targetTilt, factor);
+	}else if (currentTilt != targetTilt) {
+		currentTilt = targetTilt;
+	}
 }
 
 void Camera::Matrix(Shader& shader, const char* uniform)
@@ -85,27 +99,28 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 	{
 		Position -= speed * forward * deltaTime;
 	}
-
+	
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		Position -= speed * side * deltaTime;
-		currentTilt = -tiltAmount;
 	}
-
+	
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		Position += speed * side * deltaTime;
-		currentTilt = tiltAmount;
 	}
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE)
+	
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		currentTilt = 0.0f;
+		targetTilt = -tiltAmount;
 	}
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		currentTilt = 0.0f;
+		targetTilt = tiltAmount;
+	}
+	else
+	{
+		targetTilt = 0.0f;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)

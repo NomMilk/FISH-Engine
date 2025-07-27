@@ -33,7 +33,9 @@ class Camera
 		
 		//Tilt
 		float currentTilt = 0.0f;
-		float tiltAmount = 0.1f;
+		float targetTilt = 0.0f;
+		float tiltAmount = 0.05f;
+		float tiltSpeed = 5.0f;
 
 		//controls
 
