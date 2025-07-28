@@ -40,9 +40,107 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     }
 }
 
+//VAO util
+//THIS ONLY WORKS FOR STATIC OBJECTS, THIS DOES NOT DELETE THE VAO WHEN IT'S NOT USED!!!
+VBO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
+{
+	VBO vbo(vertices, vertexSize);
+	EBO ebo(indices, indexSize);
+	
+	// In OpenGL 2.1, we don't use VAOs, so we just return the VBO
+	// Attribute setup will be done before drawing
+	
+	return vbo;
+}
+
+void DrawTriVAO(VBO& vbo, EBO& ebo, size_t indices)
+{
+	vbo.Bind();
+	ebo.Bind();
+
+	GLsizei stride = 11 * sizeof(float);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)(0));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(3);
+	
+	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+	
+	glDisableVertexAttribArray(3);
+	glDisableVertexAttribArray(0);
+	
+	ebo.Unbind();
+	vbo.Unbind();
+}
+
 //actual Game
 int main()
 {
+	float vertices[] = {
+		// Back face (normal: 0, 0, -1)
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  // 0
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  // 1
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  // 2
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  // 3
+
+		// Front face (normal: 0, 0, 1)
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  // 4
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  // 5
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  // 6
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  // 7
+
+		// Left face (normal: -1, 0, 0)
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  // 8
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  // 9
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  // 10
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  // 11
+
+		// Right face (normal: 1, 0, 0)
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  // 12
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  // 13
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  // 14
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  // 15
+
+		// Bottom face (normal: 0, -1, 0)
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  // 16
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  // 17
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  // 18
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  // 19
+
+		// Top face (normal: 0, 1, 0)
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  // 20
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  // 21
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  // 22
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f   // 23
+	};
+	unsigned int indices[] = {
+		// Back face
+		0, 1, 2,
+		2, 3, 0,
+
+		// Front face
+		4, 5, 6,
+		6, 7, 4,
+
+		// Left face
+		8, 9, 10,
+		10, 11, 8,
+
+		// Right face
+		12, 13, 14,
+		14, 15, 12,
+
+		// Bottom face
+		16, 17, 18,
+		18, 19, 16,
+
+		// Top face
+		20, 21, 22,
+		22, 23, 20
+	};
+
 	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
 	SoundManager soundPlayer("rainbowdash.mp3");
 	soundPlayer.Loop();
@@ -70,6 +168,9 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
+
+	VBO LightVBO = VAOLinker(vertices, sizeof(vertices), Indices, sizeof(Indices));
+	EBO LightEBO(textureIndices, sizeof(textureIndices));
 
 	glm::vec4 lightColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
  
@@ -119,6 +220,8 @@ int main()
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 0.0f, 0.0f, -1.0f)
+		DrawTriVAO(LightVBO, LightEBO, 6);
 		
 		modelLoader.drawModels(shaderProgram);
 
