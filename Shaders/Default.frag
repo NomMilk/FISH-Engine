@@ -31,6 +31,7 @@ void main()
 
     // Apply lighting
     vec4 diffuse = baseColor * lightColor * diff;
+	diffuse.a = 1.0f;
 
     // Add ambient to avoid full darkness
     float ambient = 0.2;

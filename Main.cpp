@@ -40,70 +40,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     }
 }
 
-//VAO util
-//THIS ONLY WORKS FOR STATIC OBJECTS, THIS DOES NOT DELETE THE VAO WHEN IT'S NOT USED!!!
-VBO VAOLinker(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
-{
-	VBO vbo(vertices, vertexSize);
-	EBO ebo(indices, indexSize);
-	
-	// In OpenGL 2.1, we don't use VAOs, so we just return the VBO
-	// Attribute setup will be done before drawing
-	
-	return vbo;
-}
-
-VBO VAOLinkerTexture(GLfloat* vertices, size_t vertexSize, GLuint* indices, size_t indexSize)
-{
-	VBO textureVBO(vertices, vertexSize);
-	EBO textureEBO(indices, indexSize);
-	
-	// In OpenGL 2.1, we don't use VAOs, so we just return the VBO
-	// Attribute setup will be done before drawing
-	
-	return textureVBO;
-}
-
-void DrawTriVAO(VBO& vbo, EBO& ebo, size_t indices, bool hasTexture)
-{
-	vbo.Bind();
-	ebo.Bind();
-	
-	// Set up vertex attributes using shader attributes instead of fixed-function pipeline
-	// This works with OpenGL 2.1 via shaders
-	if (hasTexture) {
-		// For textured vertices (position, color, texcoords)
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-		
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
-	}
-	else {
-		// For regular vertices (position, color)
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-	}
-	
-	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
-	
-	// Disable vertex arrays
-	if (hasTexture) {
-		glDisableVertexAttribArray(2);
-	}
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
-	
-	ebo.Unbind();
-	vbo.Unbind();
-}
-
 //actual Game
 int main()
 {
@@ -116,22 +52,6 @@ int main()
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-
-	//vertices position 
-	GLfloat textureVertices[] =
-	{
-		//position//				//color//
-		5.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,
-		5.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f,
-		6.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,
-		6.0f, 2.0f, 0.0f,		1.0f, 1.0f, 1.0f
-	};
-
-	GLuint textureIndices[] =
-	{
-		0, 2, 1,
-		1, 2, 3
-	};
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
 	if (window == NULL)
@@ -151,8 +71,6 @@ int main()
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
 
-	VBO textureVBO = VAOLinker(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
-	EBO textureEBO(textureIndices, sizeof(textureIndices));
 	glm::vec4 lightColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
  
 	glEnable(GL_DEPTH_TEST);
@@ -201,8 +119,6 @@ int main()
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		
-		DrawTriVAO(textureVBO, textureEBO, 6, false);
 		
 		modelLoader.drawModels(shaderProgram);
 
