@@ -150,7 +150,6 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
-	Shader lightShader("Shaders/Light.vert", "Shaders/Light.frag");
 
 	VBO textureVBO = VAOLinker(textureVertices, sizeof(textureVertices), textureIndices, sizeof(textureIndices));
 	EBO textureEBO(textureIndices, sizeof(textureIndices));
@@ -201,11 +200,8 @@ int main()
 		
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
-		glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		
-		glUniform1i(glGetUniformLocation(lightShader.ID, "useTexture"), false);
 		DrawTriVAO(textureVBO, textureEBO, 6, false);
 		
 		modelLoader.drawModels(shaderProgram);
