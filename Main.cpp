@@ -219,9 +219,13 @@ int main()
 		
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
+
+		glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(defaultModel)));
+		glUniformMatrix3fv(glGetUniformLocation(shaderProgram.ID, "normalMatrix"), 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 1.0f, 0.0f, 0.0f);
-		DrawTriVAO(LightVBO, LightEBO, 6);
+		DrawTriVAO(LightVBO, LightEBO, 100);
 		
 		modelLoader.drawModels(shaderProgram);
 

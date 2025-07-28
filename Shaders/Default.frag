@@ -13,7 +13,7 @@ varying vec3 vertexColor;
 void main()
 {
     vec3 N = normalize(normal);
-    vec3 L = normalize(lightDir);
+    vec3 L = normalize(-lightDir);
 
     // Lambertian diffuse term
     float diff = max(dot(N, L), 0.0);
