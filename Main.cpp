@@ -115,7 +115,7 @@ int main()
 		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  // 22
 		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f   // 23
 	};
-	unsigned int indices[] = {
+	unsigned int Indices[] = {
 		// Back face
 		0, 1, 2,
 		2, 3, 0,
@@ -170,7 +170,7 @@ int main()
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
 
 	VBO LightVBO = VAOLinker(vertices, sizeof(vertices), Indices, sizeof(Indices));
-	EBO LightEBO(textureIndices, sizeof(textureIndices));
+	EBO LightEBO(Indices, sizeof(Indices));
 
 	glm::vec4 lightColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
  
@@ -220,7 +220,7 @@ int main()
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 0.0f, 0.0f, -1.0f)
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 0.0f, 0.0f, -1.0f);
 		DrawTriVAO(LightVBO, LightEBO, 6);
 		
 		modelLoader.drawModels(shaderProgram);
