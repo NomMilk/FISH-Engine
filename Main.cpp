@@ -58,7 +58,7 @@ void DrawTriVAO(VBO& vbo, EBO& ebo, size_t indices)
 	vbo.Bind();
 	ebo.Bind();
 
-	GLsizei stride = 11 * sizeof(float);
+	GLsizei stride = 6 * sizeof(float);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)(0));
 	glEnableVertexAttribArray(0);
@@ -220,7 +220,7 @@ int main()
 		glm::mat4 defaultModel = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(defaultModel));
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 0.0f, 0.0f, -1.0f);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 1.0f, 0.0f, 0.0f);
 		DrawTriVAO(LightVBO, LightEBO, 6);
 		
 		modelLoader.drawModels(shaderProgram);
