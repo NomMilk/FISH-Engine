@@ -88,40 +88,40 @@ int main()
 {
 	float vertices[] = {
 		// Back face (normal: 0, 0, -1)
-		-0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f,  0.0f, -1.0f,  // 0
-		0.5f, -0.5f, -0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f, -1.0f,  // 1
-		0.5f,  0.5f, -0.5f,  0-0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f, -1.0f,  // 2
-		-0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f, -1.0f,  // 3
+		-0.5f, -0.5f, -0.5f, 	1.0f, 0.0f, 0.0f, 	0.0f, 0.0f, 0.0f,  0.0f, -1.0f,  // 0
+		0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 	1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  // 1
+		0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 	1.0f, 1.0f, 0.0f,  0.0f, -1.0f,  // 2
+		-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 	0.0f, 1.0f, 0.0f,  0.0f, -1.0f,  // 3
 
 		// Front face (normal: 0, 0, 1)
-		-0.5f, -0.5f,  0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f,  1.0f,  // 4
-		0.5f, -0.5f,  0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f,  1.0f,  // 5
-		0.5f,  0.5f,  0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f,  1.0f,  // 6
-		-0.5f,  0.5f,  0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  0.0f,  1.0f,  // 7
+		-0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 	0.0f, 0.0f, 0.0f,  0.0f,  1.0f,  // 4
+		0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 	1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  // 5
+		0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 	1.0f, 1.0f, 0.0f,  0.0f,  1.0f,  // 6
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 	0.0f, 1.0f, 0.0f,  0.0f,  1.0f,  // 7
 
 		// Left face (normal: -1, 0, 0)
-		-0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,-1.0f,  0.0f,  0.0f,  // 8
-		-0.5f,  0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,-1.0f,  0.0f,  0.0f,  // 9
-		-0.5f,  0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,-1.0f,  0.0f,  0.0f,  // 10
-		-0.5f, -0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,-1.0f,  0.0f,  0.0f,  // 11
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 	0.0f, 0.0f, -1.0f,  0.0f,  0.0f,  // 8
+		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 	1.0f, 0.0f, -1.0f,  0.0f,  0.0f,  // 9
+		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 	1.0f, 1.0f, -1.0f,  0.0f,  0.0f,  // 10
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 	0.0f, 1.0f, -1.0f,  0.0f,  0.0f,  // 11
 
 		// Right face (normal: 1, 0, 0)
-		0.5f, -0.5f, -0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,1.0f,  0.0f,  0.0f,  // 12
-		0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,1.0f,  0.0f,  0.0f,  // 13
-		0.5f,  0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 1.0f,  0.0f,  0.0f,  // 14
-		0.5f, -0.5f,  0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,1.0f,  0.0f,  0.0f,  // 15
+		0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 	0.0f, 0.0f, 1.0f,  0.0f,  0.0f,  // 12
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 	1.0f, 0.0f, 1.0f,  0.0f,  0.0f,  // 13
+		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 	1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  // 14
+		0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 	0.0f, 1.0f, 1.0f,  0.0f,  0.0f,  // 15
 
 		// Bottom face (normal: 0, -1, 0)
-		-0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f, -1.0f,  0.0f,  // 16
-		0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f, -1.0f,  0.0f,  // 17
-		0.5f, -0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f, -1.0f,  0.0f,  // 18
-		-0.5f, -0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f, -1.0f,  0.0f,  // 19
+		-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 	0.0f, 0.0f, 0.0f, -1.0f,  0.0f,  // 16
+		0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 	1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  // 17
+		0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 1.0f, 	1.0f, 1.0f, 0.0f, -1.0f,  0.0f,  // 18
+		-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 1.0f, 	0.0f, 1.0f, 0.0f, -1.0f,  0.0f,  // 19
 
 		// Top face (normal: 0, 1, 0)
-		-0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f,0.0f,  1.0f,  0.0f,  // 20
-		0.5f,  0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  // 21
-		0.5f,  0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  // 22
-		-0.5f,  0.5f,  0.5f, -0.5f, -0.5f, -0.5f, 	-0.5f, -0.5f, 0.0f,  1.0f,  0.0f   // 23
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 	0.0f, 0.0f, 0.0f,  1.0f,  0.0f,  // 20
+		0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 	1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  // 21
+		0.5f,  0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 	1.0f, 1.0f, 0.0f,  1.0f,  0.0f,  // 22
+		-0.5f,  0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 	0.0f, 1.0f, 0.0f,  1.0f,  0.0f   // 23
 	};
 	unsigned int Indices[] = {
 		// Back face
@@ -150,9 +150,9 @@ int main()
 	};
 
 	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
-	SoundManager soundPlayer("rainbowdash.mp3");
-	soundPlayer.Loop();
-	soundPlayer.Play();
+	// SoundManager soundPlayer("rainbowdash.mp3");
+	// soundPlayer.Loop();
+	// soundPlayer.Play();
 
 	glfwInit();
 
@@ -180,7 +180,7 @@ int main()
 	VBO LightVBO = VAOLinker(vertices, sizeof(vertices), Indices, sizeof(Indices));
 	EBO LightEBO(Indices, sizeof(Indices));
 
-	glm::vec4 lightColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	glm::vec4 lightColor = glm::vec4(0.95f, 0.95f, 0.9f, 1.0f);
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -232,7 +232,7 @@ int main()
 		glUniformMatrix3fv(glGetUniformLocation(shaderProgram.ID, "normalMatrix"), 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 1.0f, 0.0f, 0.0f);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightDir"), 0.0f, -0.7f, -0.7f);
 		DrawTriVAO(LightVBO, LightEBO, sizeof(Indices));
 		
 		modelLoader.drawModels(shaderProgram);

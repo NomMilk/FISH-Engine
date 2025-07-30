@@ -81,6 +81,11 @@ void ModelLoader::drawModels(Shader& shader) {
             model = glm::rotate(model, glm::radians(models[i].rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
             model = glm::scale(model, models[i].scale);
             glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            
+            // Calculate and set normal matrix for lighting calculations
+            glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+            glUniformMatrix3fv(glGetUniformLocation(shader.ID, "normalMatrix"), 1, GL_FALSE, glm::value_ptr(normalMatrix));
+            
             try {
                 models[i].model->Draw(shader);
             } catch (const exception& e) {
