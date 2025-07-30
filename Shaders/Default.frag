@@ -29,7 +29,7 @@ void main()
     }
     
     // Ambient component - increased for better base illumination
-    float ambientStrength = 0.4;
+    float ambientStrength = 0.2;
     vec4 ambient = ambientStrength * baseColor;
     
     // Diffuse component with improved attenuation
@@ -46,8 +46,8 @@ void main()
     vec4 diffuse = diff * lightColor * baseColor * attenuation * (1.0 + heightFactor);
     
     // Specular component
-    float specularStrength = 0.4;
-    float shininess = 32.0; // Lower value = wider highlight
+    float specularStrength = 0.2;
+    float shininess = 10.0; // Lower value = wider highlight
     // Calculate view direction - assume we're looking from camera position toward the fragment
     vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0) - fragPos);
     vec3 halfwayDir = normalize(L + viewDir); // Blinn-Phong half-vector
