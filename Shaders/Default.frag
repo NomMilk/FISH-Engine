@@ -29,7 +29,7 @@ void main()
     }
     
     // Ambient component - increased for better base illumination
-    float ambientStrength = 0.2;
+    float ambientStrength = 0.1;
     vec4 ambient = ambientStrength * baseColor;
     
     // Diffuse component with improved attenuation
@@ -40,7 +40,7 @@ void main()
     
     // Calculate distance-based attenuation for more gradual falloff
     float distance = length(fragPos);
-    float attenuation = 1.0 / (1.0 + 0.005 * distance + 0.0005 * distance * distance);
+    float attenuation = 1.0 / (1.0 + 0.25 * distance + 0.05 * distance * distance);
     
     // Apply attenuation to diffuse lighting
     vec4 diffuse = diff * lightColor * baseColor * attenuation * (1.0 + heightFactor);
