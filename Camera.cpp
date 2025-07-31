@@ -88,7 +88,6 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
 		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
 		
-		std::cout << Orientation.y;
 		if (Orientation.y > 0.99f && rotX < 0.0f) rotX = 0.0f;
 		if (Orientation.y < -0.99f && rotX > 0.0f) rotX = 0.0f;
 		Orientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
