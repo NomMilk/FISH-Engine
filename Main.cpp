@@ -94,6 +94,7 @@ int main()
 	//delta time stuff
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
+	float fps = 0;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -101,6 +102,9 @@ int main()
 		std::chrono::duration<float> elapsed = now - lastTick;
 		deltaTime = elapsed.count();
 		lastTick = now;
+		
+		fps = 1.0f / deltaTime;
+		std::cout << "FPS: " << fps << '\n';
 
 		glClearColor(0.549f, 0.671f, 0.631f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
