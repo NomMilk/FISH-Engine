@@ -4,7 +4,7 @@ uniform sampler2D tex0;
 uniform bool useTexture;
 
 uniform vec4 lightColor;
-uniform vec3 lightDir;     // Directional light, should be normalized
+uniform vec3 lightPos;     // Directional light, should be normalized
 
 varying vec3 normal;       // From vertex shader, interpolated
 varying vec2 texCoords;
@@ -15,7 +15,7 @@ void main()
 {
     // Normalize vectors
     vec3 N = normalize(normal);
-    vec3 L = normalize(-lightDir);
+    vec3 L = normalize(lightPos - fragPos);
     
     // Get base color from texture or vertex color
     vec4 baseColor;
