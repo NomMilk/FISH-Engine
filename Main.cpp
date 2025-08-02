@@ -29,6 +29,8 @@ const unsigned int height = 800;
 
 Camera* globalCamera = nullptr;
 
+std::vector<BoxCollider*> pushbackColliders;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -44,6 +46,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 int main()
 {
 	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
+	pushbackColliders.push_back(&GroundCollider);
+
 	SoundManager soundPlayer("rainbowdash.mp3");
 	soundPlayer.Loop();
 	soundPlayer.Play();
@@ -116,7 +120,10 @@ int main()
 		camera.updateMatrix(90.0f, 0.1f, 100.0f);
 
 		camera.RigidBody(deltaTime);
-		camera.CollisionPush(&GroundCollider);
+		for (BoxCollider* currentCollider : pushbackColliders)
+		{
+			camera.CollisionPush(currentCollider);
+		}
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		
