@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "BoxCollider.h"
-
 /*
 here's the plan, the scene loader will load these scene objects
 every scene has three part, the trigger to load the next scene and
@@ -18,18 +16,21 @@ i'll have to talk to travis about the implentation to link this to the model loa
 in the first place if it's a good idea. 
 */
 struct Scene{
-	BoxCollider nextSceneCollider;
+	public:
+		Scene(BoxCollider nextSceneCollider, std::vector<BoxCollider> currentColliders, BoxCollider preSceneCollider)
+			:nextSceneCollider(nextSceneCollider),
+			 currentColliders(currentColliders),
+			 preSceneCollider(preSceneCollider)
 
-	std::vector<BoxCollider> currentColliders;
-
-	BoxCollider preSceneCollider;
+		BoxCollider nextSceneCollider;
+		std::vector<BoxCollider> currentColliders;
+		BoxCollider preSceneCollider;
 };
 
 class SceneLoader
 {
     public:
 		std::vector<Scene> stages;
-    private:
 };
 
 #endif
