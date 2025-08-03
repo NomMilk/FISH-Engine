@@ -30,6 +30,11 @@ struct Scene{
 class SceneLoader
 {
     public:
+		void AddStages(Scene);
+		void RemoveStage(Scene);
+	
+	private:
+		Camera* currentPlayer;
 		std::vector<Scene> stages;
 };
 
