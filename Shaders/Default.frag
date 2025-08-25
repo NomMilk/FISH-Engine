@@ -18,7 +18,7 @@ void main()
 	vec3 N = normalize(normal);
 	for (int I = 0; I < MAX_LIGHTS; I++)
 	{
-		vec3 L = normalize(lightPos[1] - fragPos);
+		vec3 L = normalize(lightPos[I] - fragPos);
 		
 		// Get base color from texture or vertex color
 		vec4 baseColor;
