@@ -14,7 +14,6 @@ varying vec3 fragPos;      // Fragment position in world space
 
 void main()
 {
-	// Get base color from texture or vertex color
 	vec4 baseColor;
 	if (useTexture) {
 		vec4 texColor = texture2D(tex0, texCoords);
@@ -46,7 +45,7 @@ void main()
 		float heightFactor = 1.0 - clamp(fragPos.y * 0.05, 0.0, 0.5);
 
 		// Calculate distance-based attenuation
-		float distance = length(fragPos);
+		float distance = length(lightPos[i] - fragPos);
 		float attenuation = 1.0 / (1.0 + 0.25 * distance + 0.05 * distance * distance);
 
 		// Combine attenuation factors

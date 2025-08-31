@@ -134,8 +134,8 @@ int main()
 		glUniformMatrix3fv(glGetUniformLocation(shaderProgram.ID, "normalMatrix"), 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[0]"), 0.5f, 0.7f, 0.7f);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[1]"), 3.0f, 3.7f, 3.7f);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[0]"), 0.0f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[1]"), 7.0f, 0.2f, 0.2f);
 		
 		modelLoader.drawModels(shaderProgram);
 
