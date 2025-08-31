@@ -96,8 +96,12 @@ int main()
 	float deltaTime = 0;
 	float fps = 0;
 
+	float moving_Test = 0;
+
 	while (!glfwWindowShouldClose(window))
 	{
+		moving_Test += deltaTime / 2;
+
 		auto now = std::chrono::system_clock::now();
 		std::chrono::duration<float> elapsed = now - lastTick;
 		deltaTime = elapsed.count();
@@ -131,7 +135,7 @@ int main()
 
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[0]"), 0.0f, 0.2f, 0.2f);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[1]"), 7.0f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos[1]"), moving_Test, 0.2f, 0.2f);
 		
 		modelLoader.drawModels(shaderProgram);
 

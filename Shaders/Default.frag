@@ -46,7 +46,7 @@ void main()
 
 		// Calculate distance-based attenuation
 		float distance = length(lightPos[i] - fragPos);
-		float attenuation = 1.0 / (1.0 + 0.25 * distance + 0.05 * distance * distance);
+		float attenuation = 1.0 / (1.0 + 0.25 * distance + 0.1 * distance * distance);
 
 		// Combine attenuation factors
 		float combinedAttenuation = attenuation * (1.0 + heightFactor);
@@ -56,7 +56,7 @@ void main()
 
 		// Specular component
 		float specularStrength = 0.2;
-		float shininess = 10.0;
+		float shininess = 5.0;
 		vec3 halfwayDir = normalize(L + viewDir);
 		float spec = pow(max(dot(N, halfwayDir), 0.0), shininess);
 		
