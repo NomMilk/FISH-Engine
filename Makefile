@@ -14,6 +14,7 @@ SRCS = Main.cpp \
        SoundManager.cpp \
        Model.cpp \
        modelLoader.cpp \
+	   SceneManager.cpp \
        glad.c \
        stb.cpp
 
