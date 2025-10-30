@@ -54,6 +54,8 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
+	GLFWwindow* helperWindow = glfwCreateWindow(width/4, height/4, "Helper", NULL, NULL);
+
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window\n";
@@ -145,6 +147,7 @@ int main()
 	
 	globalCamera = nullptr;
 	glfwDestroyWindow(window);
+	glfwDestroyWindow(helperWindow);
 	glfwTerminate();
 	return 0;
 }

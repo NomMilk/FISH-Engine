@@ -2,9 +2,12 @@
 #define SCENEMANAGER_H
 
 #include <forward_list>
+#include "BoxCollider.h"
 
 struct Scenes
 {
+	public:
+		Scenes();
 };
 
 class SceneManager
