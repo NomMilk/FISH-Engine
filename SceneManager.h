@@ -2,12 +2,17 @@
 #define SCENEMANAGER_H
 
 #include <forward_list>
+#include <string>
 #include "BoxCollider.h"
 
 struct Scenes
 {
 	public:
-		Scenes();
+		Scenes() = default;
+		Scenes(const std::string& _id) : sceneID(_id) {}
+	private:
+
+		std::string sceneID
 };
 
 class SceneManager

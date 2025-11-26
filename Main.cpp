@@ -54,7 +54,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
-	GLFWwindow* helperWindow = glfwCreateWindow(width/4, height/4, "Helper", NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -94,11 +93,14 @@ int main()
 	}
 	
 	//delta time stuff
+	float print_time = 0;
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
 	float fps = 0;
 
 	float moving_Test = 0;
+
+	std::cout << "\033[2J\033[1;1H"; // Clear screen & move cursor to top-left
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -108,9 +110,18 @@ int main()
 		std::chrono::duration<float> elapsed = now - lastTick;
 		deltaTime = elapsed.count();
 		lastTick = now;
+		print_time += deltaTime;
 		
+		//----FPS--//
 		fps = 1.0f / deltaTime;
-		std::cout << "FPS: " << fps << '\n';
+
+		if (print_time >= 1.0f) {
+			std::cout << "\033[2J\033[1;1H"; // Clear screen & move cursor to top-left
+			std::cout << "FPS: " << fps << '\n';
+			print_time = 0.0f;
+		}
+
+		//----FPS--//
 
 		glClearColor(0.549f, 0.671f, 0.631f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -147,7 +158,6 @@ int main()
 	
 	globalCamera = nullptr;
 	glfwDestroyWindow(window);
-	glfwDestroyWindow(helperWindow);
 	glfwTerminate();
 	return 0;
 }
