@@ -1,0 +1,178 @@
+# Blender3D MTL File: luigi.blend
+# Material Count: 16
+newmtl Material.064_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.425000 0.425000 0.425000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.075_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.067_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.562500 0.562500 0.562500
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.068_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.796875 0.796875 0.796875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.066_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.049_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.728125 0.728125 0.728125
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.063_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.074_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.496875 0.496875 0.496875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.073_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.765625 0.765625 0.765625
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.069_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.609375 0.609375 0.609375
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.071_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.065_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.049
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.728125 0.728125 0.728125
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd 2C605548_c.bmp
+
+
+newmtl Material.072_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.070_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.759375 0.759375 0.759375
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
+newmtl Material.076_luigi_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.396875 0.396875 0.396875
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd luigi_grp.png
+
+
