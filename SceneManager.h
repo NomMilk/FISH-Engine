@@ -12,7 +12,7 @@ struct Scenes
 		Scenes(const std::string& _id) : sceneID(_id) {}
 	private:
 
-		std::string sceneID
+		std::string sceneID;
 };
 
 class SceneManager

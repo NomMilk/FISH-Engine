@@ -30,7 +30,7 @@ BIN_DIR = bin
 OBJ_DIR = $(BIN_DIR)/obj
 
 # Executable name
-TARGET = $(BIN_DIR)/fish-engine
+TARGET = $(BIN_DIR)/runtime
 
 # Create necessary directories
 $(shell mkdir -p $(BIN_DIR) $(OBJ_DIR))
