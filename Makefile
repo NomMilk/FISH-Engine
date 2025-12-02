@@ -30,13 +30,14 @@ BIN_DIR = bin
 OBJ_DIR = $(BIN_DIR)/obj
 
 # Executable name
-TARGET = $(BIN_DIR)/runtime
+TARGET_RUNTIME = $(BIN_DIR)/runtime
+TARGET_EDITOR = $(BIN_DIR)/editor
 
 # Create necessary directories
 $(shell mkdir -p $(BIN_DIR) $(OBJ_DIR))
 
 # Default target
-all: $(TARGET) copy_resources
+all: $(TARGET_RUNTIME) $(TARGET_EDITOR) copy_resources
 
 # Copy resources to bin directory
 copy_resources: $(RESOURCES)
@@ -45,8 +46,11 @@ copy_resources: $(RESOURCES)
 	cp -r models/* $(BIN_DIR)/models/
 
 # Linking
-$(TARGET): $(addprefix $(OBJ_DIR)/,$(OBJS))
-	$(CXX) $(addprefix $(OBJ_DIR)/,$(OBJS)) -o $(TARGET) $(LDFLAGS)
+$(TARGET_RUNTIME): $(addprefix $(OBJ_DIR)/,$(OBJS))
+	$(CXX) $(addprefix $(OBJ_DIR)/,$(OBJS)) -o $(TARGET_RUNTIME) $(LDFLAGS)
+
+$(TARGET_EDITOR): $(addprefix $(OBJ_DIR)/,$(OBJS))
+	$(CXX) $(addprefix $(OBJ_DIR)/,$(OBJS)) -o $(TARGET_EDITOR) $(LDFLAGS)
 
 # Compilation
 $(OBJ_DIR)/%.o: %.cpp
