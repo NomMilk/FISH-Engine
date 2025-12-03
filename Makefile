@@ -3,64 +3,72 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 INCLUDES = -I./Libraries/Include
 LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system -lassimp -ltinyxml2
 
-# Source files
-SRCS = Main.cpp \
-       BoxCollider.cpp \
-       Camera.cpp \
-       Texture.cpp \
-       VBO.cpp \
-       EBO.cpp \
-       shaderClass.cpp \
-       SoundManager.cpp \
-       Model.cpp \
-       modelLoader.cpp \
-	   SceneManager.cpp \
-       glad.c \
-       stb.cpp
-
-# Resource files
-RESOURCES = Shaders/Default.vert Shaders/Default.frag
-
-# Object files
-OBJS = $(SRCS:.cpp=.o)
-OBJS := $(OBJS:.c=.o)
-
 # Directories
 BIN_DIR = bin
 OBJ_DIR = $(BIN_DIR)/obj
 
-# Executable name
-TARGET_RUNTIME = $(BIN_DIR)/runtime
-TARGET_EDITOR = $(BIN_DIR)/editor
+# Resources
+RESOURCES = Shaders/Default.vert Shaders/Default.frag
 
-# Create necessary directories
+# Shared source files (common engine code)
+COMMON_SRCS = \
+	BoxCollider.cpp \
+	Camera.cpp \
+	Texture.cpp \
+	VBO.cpp \
+	EBO.cpp \
+	shaderClass.cpp \
+	SoundManager.cpp \
+	Model.cpp \
+	modelLoader.cpp \
+	SceneManager.cpp \
+	glad.c \
+	stb.cpp
+
+# Program entry points
+RUNTIME_MAIN = Main.cpp
+EDITOR_MAIN  = EditorMain.cpp
+
+# Object lists
+COMMON_OBJS  = $(addprefix $(OBJ_DIR)/,$(COMMON_SRCS:.cpp=.o))
+COMMON_OBJS := $(COMMON_OBJS:.c=.o)
+
+RUNTIME_OBJS = $(COMMON_OBJS) $(OBJ_DIR)/$(RUNTIME_MAIN:.cpp=.o)
+EDITOR_OBJS  = $(COMMON_OBJS) $(OBJ_DIR)/$(EDITOR_MAIN:.cpp=.o)
+
+# Output binaries
+TARGET_RUNTIME = $(BIN_DIR)/runtime
+TARGET_EDITOR  = $(BIN_DIR)/editor
+
+# Create bin + obj directory always
 $(shell mkdir -p $(BIN_DIR) $(OBJ_DIR))
 
-# Default target
+# Default build
 all: $(TARGET_RUNTIME) $(TARGET_EDITOR) copy_resources
 
-# Copy resources to bin directory
+# Copy resources
 copy_resources: $(RESOURCES)
 	cp $(RESOURCES) $(BIN_DIR)/
 	mkdir -p $(BIN_DIR)/models
 	cp -r models/* $(BIN_DIR)/models/
 
-# Linking
-$(TARGET_RUNTIME): $(addprefix $(OBJ_DIR)/,$(OBJS))
-	$(CXX) $(addprefix $(OBJ_DIR)/,$(OBJS)) -o $(TARGET_RUNTIME) $(LDFLAGS)
+# Runtime build
+$(TARGET_RUNTIME): $(RUNTIME_OBJS)
+	$(CXX) $(RUNTIME_OBJS) -o $(TARGET_RUNTIME) $(LDFLAGS)
 
-$(TARGET_EDITOR): $(addprefix $(OBJ_DIR)/,$(OBJS))
-	$(CXX) $(addprefix $(OBJ_DIR)/,$(OBJS)) -o $(TARGET_EDITOR) $(LDFLAGS)
+# Editor build
+$(TARGET_EDITOR): $(EDITOR_OBJS)
+	$(CXX) $(EDITOR_OBJS) -o $(TARGET_EDITOR) $(LDFLAGS)
 
-# Compilation
+# Compilation rules
 $(OBJ_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJ_DIR)/%.o: %.c
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-# Clean
+# Clean build output
 clean:
 	rm -rf $(BIN_DIR)
 
-.PHONY: all clean copy_resources 
+.PHONY: all clean copy_resources
