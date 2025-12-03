@@ -15,7 +15,7 @@
 #include "shaderClass.h"
 #include "VBO.h"
 #include "EBO.h"
-#include "Camera.h"
+#include "EditorCamera.h"
 #include "SoundManager.h"
 #include "Model.h"
 #include "modelLoader.h"
@@ -23,9 +23,7 @@
 const unsigned int width = 1000;
 const unsigned int height = 800;
 
-Camera* globalCamera = nullptr;
-
-std::vector<BoxCollider*> pushbackColliders;
+EditorCamera* globalCamera = nullptr;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -42,7 +40,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 int main()
 {
 	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
-	pushbackColliders.push_back(&GroundCollider);
 
 	SoundManager soundPlayer("rainbowdash.mp3");
 	soundPlayer.Loop();
@@ -81,7 +78,7 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+	EditorCamera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	globalCamera = &camera;
 	
 	// load models from XML
@@ -131,12 +128,6 @@ int main()
 		//player Init
 		camera.Inputs(window, deltaTime);
 		camera.updateMatrix(90.0f, 0.1f, 100.0f);
-
-		camera.RigidBody(deltaTime);
-		for (BoxCollider* currentCollider : pushbackColliders)
-		{
-			camera.CollisionPush(currentCollider);
-		}
 
 		camera.Matrix(shaderProgram, "camMatrix");
 		

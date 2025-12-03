@@ -47,7 +47,6 @@ class Camera
 		int width;
 		int height;
 
-		float speed = 35.0f;
 		float sensitivity = 300.0f;
 
 		//this is for gravity

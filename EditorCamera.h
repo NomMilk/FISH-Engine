@@ -14,7 +14,7 @@
 #include "shaderClass.h"
 
 //honestly this is shaping more out to be a player than a camera ;-;
-class Camera
+class EditorCamera
 {
 	public:
 		glm::vec3 Position;
@@ -25,15 +25,14 @@ class Camera
 		//controls
 		bool firstClick = false;
 		bool wasMouseClicked = false;
-
-		bool firstSpace = false;
-		bool wasSpaceClicked = false;
-		bool alreadyJumped = false;
 		
+		int width;
+		int height;
+
 		float speed = 35.0f;
 		float sensitivity = 300.0f;
 
-		Camera(int width, int height, glm::vec3 position);
+		EditorCamera(int width, int height, glm::vec3 position);
 		void Matrix(Shader& shader, const char* uniform);
 		void updateMatrix(float FOVdeg, float nearPlane, float farPlane);
 

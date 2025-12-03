@@ -14,6 +14,7 @@ RESOURCES = Shaders/Default.vert Shaders/Default.frag
 COMMON_SRCS = \
 	BoxCollider.cpp \
 	Camera.cpp \
+	EditorCamera.cpp \
 	Texture.cpp \
 	VBO.cpp \
 	EBO.cpp \
