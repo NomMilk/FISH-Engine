@@ -56,26 +56,24 @@ void EditorCamera::Inputs(GLFWwindow* window, float deltaTime)
 	glm::vec3 forward = glm::normalize(glm::vec3(Orientation.x, 0.0f, Orientation.z));
 	glm::vec3 side = glm::normalize(glm::cross(forward, Up));
 	
-	glm::vec3 moveDir = glm::vec3(0.0f);
-	
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		moveDir += forward;
+		Position += forward;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		moveDir -= forward;
+		Position -= forward;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		moveDir -= side;
+		Position -= side;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		moveDir += side;
+		Position += side;
 	}
 	
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
