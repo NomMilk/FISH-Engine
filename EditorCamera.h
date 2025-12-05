@@ -29,7 +29,7 @@ class EditorCamera
 		int width;
 		int height;
 
-		float speed = 35.0f;
+		float speed = 0.2f;
 		float sensitivity = 300.0f;
 
 		EditorCamera(int width, int height, glm::vec3 position);

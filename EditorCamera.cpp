@@ -75,6 +75,16 @@ void EditorCamera::Inputs(GLFWwindow* window, float deltaTime)
 	{
 		Position += side;
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		Position.y += speed;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		Position.y -= speed;
+	}
 	
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
