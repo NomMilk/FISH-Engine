@@ -1,9 +1,66 @@
 #include "BoxCollider.h"
+#include <iostream>
+#include <cstdlib>
 
 BoxCollider::BoxCollider(float x, float y, float z, float Height, float Width, float Depth)
 	:ColliderVertex(glm::vec3(x, y, z)),
      ColliderScale(glm::vec3(Height, Width, Depth))
 {}
+
+CollisionResult BoxCollider::CheckCollision(Raycast ray)
+{
+	CollisionResult result;
+
+	if(ray.GetStartingPos().x > ColliderVertex.x + ColliderScale.x && ray.GetDirection().x >= 0)
+		return result;
+	if(ray.GetStartingPos().x < ColliderVertex.x && ray.GetDirection().x >= 0)
+		return result;
+	
+	if(ray.GetStartingPos().y > ColliderVertex.y + ColliderScale.y && ray.GetDirection().y >= 0)
+		return result;
+	if(ray.GetStartingPos().y < ColliderVertex.y && ray.GetDirection().y <= 0)
+		return result;
+
+	if(ray.GetStartingPos().z > ColliderVertex.z + ColliderScale.z && ray.GetDirection().z >= 0)
+		return result;
+	if(ray.GetStartingPos().z < ColliderVertex.z && ray.GetDirection().z <= 0)
+		return result;
+	
+	//some nightmare shi (shoul've looked up a youtube video for dis)
+	if(
+		!(
+			(	
+				((ray.GetStartingPos().y - ColliderVertex.y)/ray.GetDirection().y *
+				ray.GetDirection().x) + ray.GetStartingPos().x >= ColliderVertex.x + ColliderScale.x
+				||	
+				((ray.GetStartingPos().y - ColliderVertex.y)/ray.GetDirection().y *
+				ray.GetDirection().x) + ray.GetStartingPos().x <= ColliderVertex.x
+			)
+			&&
+			(	
+				((ray.GetStartingPos().x - ColliderVertex.x)/ray.GetDirection().x *
+				ray.GetDirection().y) + ray.GetStartingPos().y >= ColliderVertex.y + ColliderScale.y
+				||	
+				((ray.GetStartingPos().x - ColliderVertex.x)/ray.GetDirection().x *
+				ray.GetDirection().y) + ray.GetStartingPos().y <= ColliderVertex.y
+			)
+			&&
+			(	
+				((ray.GetStartingPos().x - ColliderVertex.x)/ray.GetDirection().x *
+				ray.GetDirection().z) + ray.GetStartingPos().z >= ColliderVertex.z + ColliderScale.z
+				||	
+				((ray.GetStartingPos().x - ColliderVertex.x)/ray.GetDirection().x *
+				ray.GetDirection().z) + ray.GetStartingPos().z <= ColliderVertex.z
+			)
+		)
+	  )
+		return result;
+	
+	std::cout << "wow does it work?";
+	result.collided = true;
+
+	return result;
+}
 
 CollisionResult BoxCollider::CheckCollision(float x, float y, float z)
 {
@@ -23,7 +80,7 @@ CollisionResult BoxCollider::CheckCollision(float x, float y, float z)
         float top = y - ColliderVertex.y;
         float bottom = (ColliderVertex.y + ColliderScale.y) - y;
         float front = z - ColliderVertex.z;
-        float back = (ColliderVertex.z + ColliderScale.z) - z;;
+        float back = (ColliderVertex.z + ColliderScale.z) - z;
 
         float minX = std::min(left, right);
         float minY = std::min(top, bottom);

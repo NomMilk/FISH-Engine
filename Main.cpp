@@ -11,6 +11,7 @@
 #include <stb/stb_image.h>
 
 #include "Texture.h"
+#include "Raycast.h"
 #include "BoxCollider.h"
 #include "shaderClass.h"
 #include "VBO.h"
@@ -42,6 +43,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 int main()
 {
 	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
+	Raycast ray(glm::vec3(0, 0, 60), glm::vec3(0.1, 0.1, -1));
+
 	pushbackColliders.push_back(&GroundCollider);
 
 	SoundManager soundPlayer("rainbowdash.mp3");
@@ -104,6 +107,7 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+		GroundCollider.CheckCollision(ray);
 		moving_Test += deltaTime / 2;
 
 		auto now = std::chrono::system_clock::now();
