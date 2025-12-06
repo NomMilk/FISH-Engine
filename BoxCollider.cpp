@@ -11,6 +11,8 @@ CollisionResult BoxCollider::CheckCollision(Raycast ray)
 {
 	CollisionResult result;
 
+	//easy guards
+
 	if(ray.GetStartingPos().x > ColliderVertex.x + ColliderScale.x && ray.GetDirection().x >= 0)
 		return result;
 	if(ray.GetStartingPos().x < ColliderVertex.x && ray.GetDirection().x >= 0)
@@ -56,7 +58,6 @@ CollisionResult BoxCollider::CheckCollision(Raycast ray)
 	  )
 		return result;
 	
-	std::cout << "wow does it work?";
 	result.collided = true;
 
 	return result;

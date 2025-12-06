@@ -25,7 +25,7 @@ void main()
 	}
 
 	// Initialize final color with ambient component
-	float ambientStrength = 0.1;
+	float ambientStrength = 0.01;
 	vec4 finalColor = ambientStrength * baseColor;
 
 	// Normalize the normal vector
@@ -46,19 +46,19 @@ void main()
 
 		// Calculate distance-based attenuation
 		float distance = length(lightPos[i] - fragPos);
-		float attenuation = 1.0 / (1.0 + 0.25 * distance + 0.1 * distance * distance);
+		float attenuation = 0.6 / (1.0 + 0.2 * distance + 0.1 * distance * distance);
 
 		// Combine attenuation factors
-		float combinedAttenuation = attenuation * (1.0 + heightFactor);
+		float combinedAttenuation = attenuation * (0.5 + heightFactor);
 
 		// Accumulate diffuse lighting
 		finalColor += diff * lightColor * baseColor * combinedAttenuation;
 
 		// Specular component
-		float specularStrength = 0.2;
-		float shininess = 5.0;
+		float specularStrength = 0.1;
+		float shininess = 0.9;
 		vec3 halfwayDir = normalize(L + viewDir);
-		float spec = pow(max(dot(N, halfwayDir), 0.0), shininess);
+		float spec = pow(max(dot(N, halfwayDir), 15), shininess);
 		
 		// Accumulate specular lighting
 		finalColor += specularStrength * spec * lightColor * attenuation * heightFactor;

@@ -75,7 +75,7 @@ int main()
 
 	Shader shaderProgram("Shaders/Default.vert", "Shaders/Default.frag");
 
-	glm::vec4 lightColor = glm::vec4(0.95f, 0.95f, 0.9f, 1.0f);
+	glm::vec4 lightColor = glm::vec4(0.6f, 0.6f, 0.95f, 1.0f);
  
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
