@@ -25,8 +25,8 @@ void main()
 	}
 
 	// Initialize final color with ambient component
-	float ambientStrength = 0.01;
-	vec4 finalColor = ambientStrength * baseColor;
+	float ambientStrength = 0.1;
+	vec4 finalColor = ambientStrength * baseColor * vec4(1, 1.1, 1.1, 1);
 
 	// Normalize the normal vector
 	vec3 N = normalize(normal);
@@ -46,7 +46,7 @@ void main()
 
 		// Calculate distance-based attenuation
 		float distance = length(lightPos[i] - fragPos);
-		float attenuation = 0.6 / (1.0 + 0.2 * distance + 0.1 * distance * distance);
+		float attenuation = 0.4 / (1.0 + 0.2 * distance + 0.1 * distance * distance);
 
 		// Combine attenuation factors
 		float combinedAttenuation = attenuation * (0.5 + heightFactor);
