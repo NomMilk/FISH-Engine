@@ -20,6 +20,7 @@
 #include "SoundManager.h"
 #include "Model.h"
 #include "modelLoader.h"
+#include "SceneManager.h"
 
 const unsigned int width = 1000;
 const unsigned int height = 800;

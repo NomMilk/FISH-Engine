@@ -1,32 +1,35 @@
-#ifndef SCENEMANAGER_H
-#define SCENEMANAGER_H
+#pragma once
 
 #include <forward_list>
 #include <string>
 #include "BoxCollider.h"
+#include "modelLoader.h"
 
 struct Scenes
 {
 	public:
-		Scenes() = default;
-		Scenes(const std::string& _id) : sceneID(_id) {}
-	private:
+		Scenes(const std::string& _id, BoxCollider& _enterCollider, BoxCollider& _exitCollider)
+		: sceneID(_id), enterCollider(_enterCollider), exitCollider(_exitCollider) {}
 
+	private:
 		std::string sceneID;
+
+		BoxCollider exitCollider;
+		BoxCollider enterCollider;
+		glm::vec3 teleportPoint;
+
 };
 
 class SceneManager
 {
     public:
         void nextScene();
-		void loadCurrent();
+		void prevScene();
 
 		void setScenes(const std::forward_list<Scenes>& newScenes);
 
     private:
-        static std::forward_list<Scenes>* scenes;
-        SceneManager() = delete;
+        std::forward_list<Scenes>* scenes;
+		ModelLoader modelLoader;
         
 };
-
-#endif

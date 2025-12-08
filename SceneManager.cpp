@@ -6,7 +6,7 @@ void SceneManager::nextScene()
 	
 }
 
-void SceneManager::loadCurrent()
+void SceneManager::prevScene()
 {
 	
 }
