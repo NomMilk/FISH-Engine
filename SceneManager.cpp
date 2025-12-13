@@ -3,7 +3,7 @@
 
 void SceneManager::nextScene()
 {
-	
+
 }
 
 void SceneManager::prevScene()
@@ -11,5 +11,7 @@ void SceneManager::prevScene()
 	
 }
 
-void SceneManager::setScenes(const std::forward_list<Scenes>& newScenes)
-{}
+void SceneManager::setScenes(const std::forward_list<Scenes>& _newScenes)
+{
+
+}

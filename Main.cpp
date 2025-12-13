@@ -21,13 +21,14 @@
 #include "Model.h"
 #include "modelLoader.h"
 #include "SceneManager.h"
+#include "EngineUserHooks.h"
+
+#include "UserMain.h"
 
 const unsigned int width = 1000;
 const unsigned int height = 800;
 
 Camera* globalCamera = nullptr;
-
-std::vector<BoxCollider*> pushbackColliders;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -43,11 +44,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 //actual Game
 int main()
 {
-	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
-	Raycast ray(glm::vec3(0, 0, 60), glm::vec3(0.1, 0.1, -1));
-
-	pushbackColliders.push_back(&GroundCollider);
-
+	//sound
 	SoundManager soundPlayer("rainbowdash.mp3");
 	soundPlayer.Loop();
 	soundPlayer.Play();
@@ -87,6 +84,10 @@ int main()
 	
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	globalCamera = &camera;
+
+	//init instance and use user_scripts
+	FishEngine::GameInstance currentInstance(camera);
+	start(&currentInstance);
 	
 	// load models from XML
 	ModelLoader modelLoader;
@@ -106,9 +107,10 @@ int main()
 
 	std::cout << "\033[2J\033[1;1H"; // Clear screen & move cursor to top-left
 
+
+	//actual runtime
 	while (!glfwWindowShouldClose(window))
 	{
-		GroundCollider.CheckCollision(ray);
 		moving_Test += deltaTime / 2;
 
 		auto now = std::chrono::system_clock::now();
@@ -138,9 +140,9 @@ int main()
 		camera.updateMatrix(90.0f, 0.1f, 100.0f);
 
 		camera.RigidBody(deltaTime);
-		for (BoxCollider* currentCollider : pushbackColliders)
+		for (BoxCollider currentCollider : currentInstance.Getpushback())
 		{
-			camera.CollisionPush(currentCollider);
+			camera.CollisionPush(&currentCollider);
 		}
 
 		camera.Matrix(shaderProgram, "camMatrix");

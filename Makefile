@@ -23,6 +23,8 @@ COMMON_SRCS = \
 	Model.cpp \
 	modelLoader.cpp \
 	SceneManager.cpp \
+	EngineUserHooks.cpp \
+	UserMain.cpp \
 	glad.c \
 	stb.cpp
 
