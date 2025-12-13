@@ -121,6 +121,7 @@ int main()
 		
 		//----FPS--//
 		fps = 1.0f / deltaTime;
+		update(&currentInstance, deltaTime);
 
 		if (print_time >= 1.0f) {
 			std::cout << "\033[2J\033[1;1H"; // Clear screen & move cursor to top-left
