@@ -26,3 +26,17 @@ To compile goodly, you must have these installed on your system.
 - Download and install dependencies manually
 - Build using the provided Makefile
 - Run the test project
+
+## Quickstart Guide
+- All Engine user code is handled by UserMain.cpp
+```
+void start(FishEngine::GameInstance *gameInstance)
+{
+    //runs at the start
+}
+
+void update(FishEngine::GameInstance *gameInstance, float deltatime)
+{
+    //runs every frame
+}
+```
