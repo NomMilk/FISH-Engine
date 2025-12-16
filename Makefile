@@ -37,7 +37,9 @@ COMMON_OBJS  = $(addprefix $(OBJ_DIR)/,$(COMMON_SRCS:.cpp=.o))
 COMMON_OBJS := $(COMMON_OBJS:.c=.o)
 
 RUNTIME_OBJS = $(COMMON_OBJS) $(OBJ_DIR)/$(RUNTIME_MAIN:.cpp=.o)
-EDITOR_OBJS  = $(COMMON_OBJS) $(OBJ_DIR)/$(EDITOR_MAIN:.cpp=.o)
+EDITOR_IMGUI_SRCS = Libraries/Include/imgui/imgui.cpp Libraries/Include/imgui/imgui_draw.cpp Libraries/Include/imgui/imgui_widgets.cpp Libraries/Include/imgui/imgui_tables.cpp Libraries/Include/imgui/imgui_impl_glfw.cpp Libraries/Include/imgui/imgui_impl_opengl2.cpp
+EDITOR_IMGUI_OBJS = $(addprefix $(OBJ_DIR)/,$(notdir $(EDITOR_IMGUI_SRCS:.cpp=.o)))
+EDITOR_OBJS  = $(COMMON_OBJS) $(EDITOR_IMGUI_OBJS) $(OBJ_DIR)/$(EDITOR_MAIN:.cpp=.o)
 
 # Output binaries
 TARGET_RUNTIME = $(BIN_DIR)/runtime
@@ -68,6 +70,24 @@ $(OBJ_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJ_DIR)/%.o: %.c
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/imgui_impl_glfw.o: Libraries/Include/imgui/imgui_impl_glfw.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/imgui_impl_opengl2.o: Libraries/Include/imgui/imgui_impl_opengl2.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/imgui.o: Libraries/Include/imgui/imgui.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/imgui_draw.o: Libraries/Include/imgui/imgui_draw.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/imgui_widgets.o: Libraries/Include/imgui/imgui_widgets.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/imgui_tables.o: Libraries/Include/imgui/imgui_tables.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # Clean build output
