@@ -1,7 +1,21 @@
-CXX = g++
+OS ?= $(shell uname -s)
+
+ifeq ($(OS), windows)
+	CXX = x86_64-w64-mingw32-g++
+	EXE_EXT = .exe
+else
+	CXX = g++
+	EXE_EXT = 
+endif
+
 CXXFLAGS = -Wall -Wextra -std=c++17
 INCLUDES = -I./Libraries/Include
-LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system -lassimp -ltinyxml2
+
+ifeq ($(OS), windows)
+	LDFLAGS = -lglfw3 -lopengl32 -lgdi32 -lsfml-audio -lsfml-system -lassimp -ltinyxml2
+else
+	LDFLAGS = -lglfw -lGL -ldl -lsfml-audio -lsfml-system -lassimp -ltinyxml2
+endif
 
 # Directories
 BIN_DIR = bin
@@ -42,8 +56,8 @@ EDITOR_IMGUI_OBJS = $(addprefix $(OBJ_DIR)/,$(notdir $(EDITOR_IMGUI_SRCS:.cpp=.o
 EDITOR_OBJS  = $(COMMON_OBJS) $(EDITOR_IMGUI_OBJS) $(OBJ_DIR)/$(EDITOR_MAIN:.cpp=.o)
 
 # Output binaries
-TARGET_RUNTIME = $(BIN_DIR)/runtime
-TARGET_EDITOR  = $(BIN_DIR)/editor
+TARGET_RUNTIME = $(BIN_DIR)/runtime$(EXE_EXT)
+TARGET_EDITOR  = $(BIN_DIR)/editor$(EXE_EXT)
 
 # Create bin + obj directory always
 $(shell mkdir -p $(BIN_DIR) $(OBJ_DIR))
