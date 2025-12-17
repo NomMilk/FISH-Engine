@@ -103,10 +103,12 @@ int main()
 	std::string path = std::filesystem::current_path().string() + "/prefabRooms";
 
 	//find all prefab rooms
-	for (const auto& entry : std::filesystem::directory_iterator(path)) {
-		if (entry.is_regular_file() && entry.path().extension() == ".xml") {
-			std::cout << entry.path().string() << std::endl;
-			xmlFiles.push_back(entry.path());
+	for (const auto& entry : std::filesystem::directory_iterator(path))
+	{
+		if (entry.is_regular_file() && entry.path().extension() == ".xml")
+		{
+			std::string file = "prefabRooms/" + entry.path().filename().string();
+			xmlFiles.push_back(file);
 		}
 	}
 
