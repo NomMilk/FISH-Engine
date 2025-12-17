@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <float.h>
+#include <filesystem>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -90,7 +91,7 @@ int main()
 	globalCamera = &camera;
 	
 	ModelLoader modelLoader;
-	std::string currentXML = "example.xml";
+	std::string currentXML = "prefabRooms/example.xml";
 	if (!modelLoader.loadFromXML(currentXML)) {
 		std::cerr << "Failed to load models from XML file" << std::endl;
 	} else {
@@ -98,7 +99,17 @@ int main()
 	}
 
 	bool showOpenScene = false;
-	std::vector<std::string> xmlFiles = {"example.xml", "prefabRooms/example.xml", "prefabRooms/example2.xml"};
+	std::vector<std::string> xmlFiles;
+	std::string path = std::filesystem::current_path().string() + "/prefabRooms";
+
+	//find all prefab rooms
+	for (const auto& entry : std::filesystem::directory_iterator(path)) {
+		if (entry.is_regular_file() && entry.path().extension() == ".xml") {
+			std::cout << entry.path().string() << std::endl;
+			xmlFiles.push_back(entry.path());
+		}
+	}
+
 	
 	//delta time stuff
 	float print_time = 0;
@@ -173,6 +184,10 @@ int main()
 		if (viewportW < 1) viewportW = 1;
 		if (viewportH < 1) viewportH = 1;
 
+		ImGui::End();
+		ImGui::Begin("Hierarchy");
+		ImGui::End();
+		ImGui::Begin("Properties");
 		ImGui::End();
 
 		if (showOpenScene) {

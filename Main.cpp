@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/gl.h>
+#include <fstream>
+#include <string>
 
 #include <stb/stb_image.h>
 
@@ -24,6 +26,10 @@
 #include "EngineUserHooks.h"
 
 #include "UserMain.h"
+
+std::string xmlFile;
+std::ifstream startupFile("RUNTIME_STARTUP_CONFIG");
+
 
 const unsigned int width = 1000;
 const unsigned int height = 800;
@@ -89,9 +95,18 @@ int main()
 	FishEngine::GameInstance currentInstance(camera);
 	start(&currentInstance);
 	
+	//find which xml file to open
+	if (!startupFile.is_open()) {
+		std::cerr << "Failed to open STARTUP_RUNTIME" << std::endl;
+	}
+
+	// Read first line
+	if (!std::getline(startupFile, xmlFile) || xmlFile.empty()) {
+		std::cerr << "STARTUP_RUNTIME is empty or invalid" << std::endl;
+	}
 	// load models from XML
 	ModelLoader modelLoader;
-	if (!modelLoader.loadFromXML("example.xml")) {
+	if (!modelLoader.loadFromXML(xmlFile)) {
 		std::cerr << "Failed to load models from XML file" << std::endl;
 	} else {
 		std::cout << "Successfully loaded " << modelLoader.getModelCount() << " models from XML" << std::endl;
