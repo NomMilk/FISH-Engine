@@ -51,7 +51,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 int main()
 {
 	//sound
-	SoundManager soundPlayer("rainbowdash.mp3");
+	SoundManager soundPlayer("Assets/rainbowdash.mp3");
 	soundPlayer.Loop();
 	soundPlayer.Play();
 
