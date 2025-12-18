@@ -2,6 +2,7 @@
 #include <chrono>
 #include <vector>
 #include <string>
+#include <cstring>
 #include <float.h>
 #include <filesystem>
 
@@ -53,7 +54,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
-	GLFWwindow* window = glfwCreateWindow(width, height, "Game", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, "Editor", NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -101,6 +102,7 @@ int main()
 	bool showOpenScene = false;
 	std::vector<std::string> xmlFiles;
 	std::string path = std::filesystem::current_path().string() + "/prefabRooms";
+	int selectedModelIndex = -1;
 
 	//find all prefab rooms
 	for (const auto& entry : std::filesystem::directory_iterator(path))
@@ -156,6 +158,9 @@ int main()
 				if (ImGui::MenuItem("Open Scene")) {
 					showOpenScene = true;
 				}
+				if (ImGui::MenuItem("Save Scene")) {
+					modelLoader.saveToXML(currentXML);
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -188,8 +193,84 @@ int main()
 
 		ImGui::End();
 		ImGui::Begin("Hierarchy");
+		if (ImGui::Button("Add Model")) {
+			modelLoader.addModel("Model");
+			selectedModelIndex = modelLoader.getModelCount() - 1;
+		}
+		for (int i = 0; i < modelLoader.getModelCount(); i++) {
+			const ModelData* modelData = modelLoader.getModelData(i);
+			if (modelData != nullptr) {
+				std::string displayName;
+				if (modelData->name.empty()) {
+					displayName = modelData->path;
+				} else {
+					displayName = modelData->name;
+				}
+				bool isSelected = (selectedModelIndex == i);
+				if (ImGui::Selectable(displayName.c_str(), isSelected)) {
+					selectedModelIndex = i;
+				}
+			}
+		}
 		ImGui::End();
 		ImGui::Begin("Properties");
+		if (selectedModelIndex >= 0) {
+			ModelData* modelData = modelLoader.getModelData(selectedModelIndex);
+			if (modelData != nullptr) {
+				char nameBuffer[256];
+				for (int i = 0; i < 256; i++) {
+					nameBuffer[i] = 0;
+				}
+				for (int i = 0; i < modelData->name.length() && i < 255; i++) {
+					nameBuffer[i] = modelData->name[i];
+				}
+				if (ImGui::InputText("Name", nameBuffer, 256)) {
+					modelData->name = nameBuffer;
+				}
+				
+				char pathBuffer[512];
+				for (int i = 0; i < 512; i++) {
+					pathBuffer[i] = 0;
+				}
+				for (int i = 0; i < modelData->path.length() && i < 511; i++) {
+					pathBuffer[i] = modelData->path[i];
+				}
+				if (ImGui::InputText("Path", pathBuffer, 512)) {
+					modelData->path = pathBuffer;
+					modelLoader.loadModelForIndex(selectedModelIndex);
+				}
+				
+				float posX = modelData->position.x;
+				float posY = modelData->position.y;
+				float posZ = modelData->position.z;
+				float posArray[3] = {posX, posY, posZ};
+				if (ImGui::InputFloat3("Position", posArray)) {
+					modelData->position.x = posArray[0];
+					modelData->position.y = posArray[1];
+					modelData->position.z = posArray[2];
+				}
+				
+				float rotX = modelData->rotation.x;
+				float rotY = modelData->rotation.y;
+				float rotZ = modelData->rotation.z;
+				float rotArray[3] = {rotX, rotY, rotZ};
+				if (ImGui::InputFloat3("Rotation", rotArray)) {
+					modelData->rotation.x = rotArray[0];
+					modelData->rotation.y = rotArray[1];
+					modelData->rotation.z = rotArray[2];
+				}
+				
+				float scaleX = modelData->scale.x;
+				float scaleY = modelData->scale.y;
+				float scaleZ = modelData->scale.z;
+				float scaleArray[3] = {scaleX, scaleY, scaleZ};
+				if (ImGui::InputFloat3("Scale", scaleArray)) {
+					modelData->scale.x = scaleArray[0];
+					modelData->scale.y = scaleArray[1];
+					modelData->scale.z = scaleArray[2];
+				}
+			}
+		}
 		ImGui::End();
 
 		if (showOpenScene) {
@@ -198,6 +279,7 @@ int main()
 				if (ImGui::Selectable(xmlFiles[i].c_str())) {
 					currentXML = xmlFiles[i];
 					modelLoader.loadFromXML(currentXML);
+					selectedModelIndex = -1;
 					showOpenScene = false;
 				}
 			}

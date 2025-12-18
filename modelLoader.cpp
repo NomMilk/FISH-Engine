@@ -38,9 +38,14 @@ bool ModelLoader::loadFromXML(const string& xmlPath) {
     tinyxml2::XMLElement* modelElement = modelsElement->FirstChildElement("model");
     while (modelElement) {
         ModelData currentModel;
+        currentModel.name = "";
         currentModel.position = glm::vec3(0.0f);
         currentModel.rotation = glm::vec3(0.0f);
         currentModel.scale = glm::vec3(1.0f);
+        const char* nameAttr = modelElement->Attribute("name");
+        if (nameAttr) {
+            currentModel.name = nameAttr;
+        }
         tinyxml2::XMLElement* pathElement = modelElement->FirstChildElement("path");
         if (pathElement && pathElement->GetText()) {
             currentModel.path = pathElement->GetText();
@@ -119,6 +124,13 @@ const ModelData* ModelLoader::getModelData(size_t index) const {
     return nullptr;
 }
 
+ModelData* ModelLoader::getModelData(size_t index) {
+    if (index < models.size()) {
+        return &models[index];
+    }
+    return nullptr;
+}
+
 void ModelLoader::cleanup() {
     for (int i = 0; i < models.size(); i++) {
         if (models[i].model) {
@@ -127,4 +139,86 @@ void ModelLoader::cleanup() {
         }
     }
     models.clear();
+}
+
+void ModelLoader::addModel(const std::string& name) {
+    ModelData newModel;
+    newModel.name = name;
+    newModel.path = "";
+    newModel.position = glm::vec3(0.0f, 0.0f, 0.0f);
+    newModel.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    newModel.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+    newModel.model = nullptr;
+    models.push_back(newModel);
+}
+
+void ModelLoader::loadModelForIndex(size_t index) {
+    if (index >= models.size()) {
+        return;
+    }
+    if (models[index].model != nullptr) {
+        delete models[index].model;
+        models[index].model = nullptr;
+    }
+    if (!models[index].path.empty()) {
+        try {
+            models[index].model = new Model(models[index].path.c_str());
+            cout << "Loaded model: " << models[index].path << endl;
+        } catch (const exception& e) {
+            cout << "Failed to load model: " << models[index].path << " - " << e.what() << endl;
+            models[index].model = nullptr;
+        }
+    }
+}
+
+bool ModelLoader::saveToXML(const std::string& xmlPath) {
+    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
+    doc.InsertFirstChild(decl);
+    
+    tinyxml2::XMLElement* root = doc.NewElement("scene");
+    doc.InsertEndChild(root);
+    
+    tinyxml2::XMLElement* modelsElement = doc.NewElement("models");
+    root->InsertEndChild(modelsElement);
+    
+    for (int i = 0; i < models.size(); i++) {
+        tinyxml2::XMLElement* modelElement = doc.NewElement("model");
+        if (!models[i].name.empty()) {
+            modelElement->SetAttribute("name", models[i].name.c_str());
+        }
+        
+        tinyxml2::XMLElement* pathElement = doc.NewElement("path");
+        tinyxml2::XMLText* pathText = doc.NewText(models[i].path.c_str());
+        pathElement->InsertEndChild(pathText);
+        modelElement->InsertEndChild(pathElement);
+        
+        tinyxml2::XMLElement* posElement = doc.NewElement("position");
+        posElement->SetAttribute("x", models[i].position.x);
+        posElement->SetAttribute("y", models[i].position.y);
+        posElement->SetAttribute("z", models[i].position.z);
+        modelElement->InsertEndChild(posElement);
+        
+        tinyxml2::XMLElement* rotElement = doc.NewElement("rotation");
+        rotElement->SetAttribute("x", models[i].rotation.x);
+        rotElement->SetAttribute("y", models[i].rotation.y);
+        rotElement->SetAttribute("z", models[i].rotation.z);
+        modelElement->InsertEndChild(rotElement);
+        
+        tinyxml2::XMLElement* scaleElement = doc.NewElement("scale");
+        scaleElement->SetAttribute("x", models[i].scale.x);
+        scaleElement->SetAttribute("y", models[i].scale.y);
+        scaleElement->SetAttribute("z", models[i].scale.z);
+        modelElement->InsertEndChild(scaleElement);
+        
+        modelsElement->InsertEndChild(modelElement);
+    }
+    
+    tinyxml2::XMLError result = doc.SaveFile(xmlPath.c_str());
+    if (result != tinyxml2::XML_SUCCESS) {
+        cout << "Failed to save XML file: " << xmlPath << endl;
+        return false;
+    }
+    cout << "Saved " << models.size() << " models to " << xmlPath << endl;
+    return true;
 } 

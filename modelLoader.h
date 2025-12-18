@@ -8,6 +8,7 @@
 #include <tinyxml2.h>
 
 struct ModelData {
+    std::string name;
     std::string path;
     glm::vec3 position;
     glm::vec3 rotation;
@@ -20,9 +21,13 @@ public:
     ModelLoader();
     ~ModelLoader();
     bool loadFromXML(const std::string& xmlPath);
+    bool saveToXML(const std::string& xmlPath);
     void drawModels(Shader& shader);
     size_t getModelCount() const;
     const ModelData* getModelData(size_t index) const;
+    ModelData* getModelData(size_t index);
+    void addModel(const std::string& name);
+    void loadModelForIndex(size_t index);
 private:
     std::vector<ModelData> models;
     glm::vec3 parseVectorElement(tinyxml2::XMLElement* element);
