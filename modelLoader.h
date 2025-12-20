@@ -27,6 +27,7 @@ public:
     const ModelData* getModelData(size_t index) const;
     ModelData* getModelData(size_t index);
     void addModel(const std::string& name);
+	bool alreadyExist(const std::string& name) const;
     void loadModelForIndex(size_t index);
 private:
     std::vector<ModelData> models;

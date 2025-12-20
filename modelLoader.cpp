@@ -152,6 +152,13 @@ void ModelLoader::addModel(const std::string& name) {
     models.push_back(newModel);
 }
 
+bool ModelLoader::alreadyExist(const std::string& name) const {
+	for (size_t i = 0; i < models.size(); ++i) {
+		if(models[i].name == name) return true;
+	}
+	return false;
+}
+
 void ModelLoader::loadModelForIndex(size_t index) {
     if (index >= models.size()) {
         return;
@@ -182,7 +189,7 @@ bool ModelLoader::saveToXML(const std::string& xmlPath) {
     tinyxml2::XMLElement* modelsElement = doc.NewElement("models");
     root->InsertEndChild(modelsElement);
     
-    for (int i = 0; i < models.size(); i++) {
+    for (size_t i = 0; i < models.size(); i++) {
         tinyxml2::XMLElement* modelElement = doc.NewElement("model");
         if (!models[i].name.empty()) {
             modelElement->SetAttribute("name", models[i].name.c_str());

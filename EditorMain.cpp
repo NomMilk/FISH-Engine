@@ -194,7 +194,22 @@ int main()
 		ImGui::End();
 		ImGui::Begin("Hierarchy");
 		if (ImGui::Button("Add Model")) {
-			modelLoader.addModel("Model");
+			std::string modelName = "Model";
+
+			if(modelLoader.alreadyExist(modelName))
+			{
+				unsigned int modelInc = 1;
+				while(modelLoader.alreadyExist(modelName + std::to_string(modelInc)))
+				{
+					modelInc += 1;
+				}
+				modelLoader.addModel(modelName + std::to_string(modelInc));
+			}
+			else
+			{
+				modelLoader.addModel(modelName);
+			}
+
 			selectedModelIndex = modelLoader.getModelCount() - 1;
 		}
 		for (int i = 0; i < modelLoader.getModelCount(); i++) {
