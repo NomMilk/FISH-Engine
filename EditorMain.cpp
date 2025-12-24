@@ -5,6 +5,7 @@
 #include <cstring>
 #include <float.h>
 #include <filesystem>
+#include <algorithm>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -100,6 +101,8 @@ int main()
 	}
 
 	bool showOpenScene = false;
+	bool showOpenRuntime = false;
+
 	std::vector<std::string> xmlFiles;
 	std::string path = std::filesystem::current_path().string() + "/prefabRooms";
 	int selectedModelIndex = -1;
@@ -120,6 +123,8 @@ int main()
 	auto lastTick = std::chrono::system_clock::now();
 	float deltaTime = 0;
 	float fps = 0;
+	//this is fps that is going to be displayed so it doesn't appear off the screen
+	float displayedFPS = 0;
 
 	float moving_Test = 0;
 
@@ -136,11 +141,11 @@ int main()
 		print_time += deltaTime;
 		
 		//----FPS--//
+		//fps display logic is in Info
 		fps = 1.0f / deltaTime;
 
 		if (print_time >= 1.0f) {
-			std::cout << "\033[2J\033[1;1H"; // Clear screen & move cursor to top-left
-			std::cout << "FPS: " << fps << '\n';
+			displayedFPS = fps;
 			print_time = 0.0f;
 		}
 
@@ -160,6 +165,9 @@ int main()
 				}
 				if (ImGui::MenuItem("Save Scene")) {
 					modelLoader.saveToXML(currentXML);
+				}
+				if (ImGui::MenuItem("Update Runtime")) {
+					showOpenRuntime = true;
 				}
 				ImGui::EndMenu();
 			}
@@ -300,6 +308,29 @@ int main()
 			}
 			ImGui::End();
 		}
+
+		if (showOpenRuntime) {
+			ImGui::Begin("Change Runtime Scene", &showOpenRuntime);
+			for (size_t i = 0; i < xmlFiles.size(); i++) {
+				if (ImGui::Selectable(xmlFiles[i].c_str())) {
+					selectedModelIndex = -1;
+					showOpenRuntime = false;
+
+					std::ofstream newRuntime("RUNTIME_STARTUP_CONFIG");
+					if(newRuntime.is_open()) {
+						newRuntime << xmlFiles[i].c_str();
+					} else {
+						std::cout << "Error unable to create runtime config";
+					}
+				}
+			}
+			ImGui::End();
+		}
+
+		ImGui::Begin("Info");
+			ImGui::Text("FPS: %f", displayedFPS);
+		ImGui::End();
+
 
 		ImGui::Render();
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
