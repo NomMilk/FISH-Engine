@@ -23,7 +23,6 @@ public:
     bool loadFromXML(const std::string& xmlPath);
     bool saveToXML(const std::string& xmlPath);
     void drawModels(Shader& shader);
-    void drawColliders(Shader& shader);
     size_t getModelCount() const;
     const ModelData* getModelData(size_t index) const;
     ModelData* getModelData(size_t index);

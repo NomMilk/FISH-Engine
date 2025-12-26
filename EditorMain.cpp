@@ -49,7 +49,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 //actual Game
 int main()
 {
-	BoxCollider GroundCollider(-25.0f, -25.0f, -5.0f, 50.0f, 50.0f, 5.0f);
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
