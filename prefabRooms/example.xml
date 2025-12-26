@@ -14,4 +14,10 @@
             <scale x="0.1" y="0.1" z="0.1"/>
         </model>
     </models>
+	<colliders>
+		<collider>
+            <position x="-10" y="-10" z="-5"/>
+            <scale x="20" y="20" z="10"/>
+		</collider>
+	</colliders>
 </scene>
