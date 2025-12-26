@@ -100,6 +100,27 @@ void ModelLoader::drawModels(Shader& shader) {
     }
 }
 
+void ModelLoader::drawColliders(Shader& shader) {
+    for (int i = 0; i < models.size(); i++) {
+        if (models[i].model) {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, models[i].position);
+            model = glm::scale(model, models[i].scale);
+            glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            
+            // Calculate and set normal matrix for lighting calculations
+            glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+            glUniformMatrix3fv(glGetUniformLocation(shader.ID, "normalMatrix"), 1, GL_FALSE, glm::value_ptr(normalMatrix));
+            
+            try {
+                models[i].model->Draw(shader);
+            } catch (const exception& e) {
+                cout << "Error drawing model: " << e.what() << endl;
+            }
+        }
+    }
+}
+
 glm::vec3 ModelLoader::parseVectorElement(tinyxml2::XMLElement* element) {
     float x = 0.0f;
     float y = 0.0f;

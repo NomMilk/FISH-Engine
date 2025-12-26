@@ -36,7 +36,6 @@ COMMON_SRCS = \
 	SoundManager.cpp \
 	Model.cpp \
 	modelLoader.cpp \
-	SceneManager.cpp \
 	EngineUserHooks.cpp \
 	UserMain.cpp \
 	glad.c \

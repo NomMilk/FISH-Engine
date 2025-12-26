@@ -14,6 +14,8 @@ namespace FishEngine
 			void AddToPhysical(BoxCollider _collider);
 			void RemoveFromPhysical(BoxCollider _collider);
 
+			void TeleportPlayer(float x, float y, float z);
+
 			const std::vector<BoxCollider> Getpushback() const {return pushbackColliders; }
 
 		private:

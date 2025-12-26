@@ -10,6 +10,11 @@ namespace FishEngine
 		pushbackColliders.push_back(_collider);
 	}
 
+	void GameInstance::TeleportPlayer(float x, float y, float z)
+	{
+		player.Position = glm::vec3(x, z, y);
+	}
+
 	void GameInstance::RemoveFromPhysical(BoxCollider _collider)
 	{
 

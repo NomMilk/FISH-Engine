@@ -22,7 +22,6 @@
 #include "SoundManager.h"
 #include "Model.h"
 #include "modelLoader.h"
-#include "SceneManager.h"
 #include "EngineUserHooks.h"
 
 #include "UserMain.h"
