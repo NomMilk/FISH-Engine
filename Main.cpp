@@ -22,6 +22,7 @@
 #include "SoundManager.h"
 #include "Model.h"
 #include "modelLoader.h"
+#include "UITextLoader.h"
 #include "EngineUserHooks.h"
 
 #include "UserMain.h"

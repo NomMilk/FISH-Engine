@@ -37,6 +37,7 @@ COMMON_SRCS = \
 	Model.cpp \
 	modelLoader.cpp \
 	EngineUserHooks.cpp \
+	UITextLoader.cpp \
 	UserMain.cpp \
 	glad.c \
 	stb.cpp
