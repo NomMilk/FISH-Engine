@@ -14,8 +14,8 @@ struct TextInfo {
 
 class TextLoader {
 public:
-    TextLoader();
-    ~TextLoader();
+	TextLoader();
+	~TextLoader();
 	//honestly might be an issue with dangling ptrs but like ahhh should be fineeeeeeee
     TextInfo* drawText(Shader& shader, std::string text, float x, float y);
 

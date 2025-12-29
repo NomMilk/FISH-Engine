@@ -122,7 +122,9 @@ int main()
 
 	std::cout << "\033[2J\033[1;1H"; // Clear screen & move cursor to top-left
 
+	//testing Text
 
+	TextLoader textLoader;
 	//actual runtime
 	while (!glfwWindowShouldClose(window))
 	{
@@ -150,6 +152,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.Activate();
+		textLoader.drawText(shaderProgram, "Test", 1, 1);
 		
 		//player Init
 		camera.Inputs(window, deltaTime);
