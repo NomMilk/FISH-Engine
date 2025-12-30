@@ -17,20 +17,17 @@ TextInfo* TextLoader::drawText(Shader& shader, std::string text, float x, float 
     editedText.y = y;
     currentText[currentIndex] = editedText;
 
-    //Texture testTexture("goldfish.jpg", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-
 	shader.Activate();
-    //testTexture.Bind();
     glUniform1i(glGetUniformLocation(shader.ID, "useTexture"), 1);
 
     glDisable(GL_DEPTH_TEST);
 
     float quadVertices[] = {
-        // pos              // normal       // uv
-        -0.5f, -0.5f, 0.0f,  0,0,1,          0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f,  0,0,1,          1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f, 0.0f,  0,0,1,          1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f,  0,0,1,          0.0f, 1.0f, 1.0f, 1.0f, 1.0f
+        // pos       				// uv
+        -0.5f, -0.5f, 0.0f,          0.0f, 0.0f,
+         0.5f, -0.5f, 0.0f,          1.0f, 0.0f,
+         0.5f,  0.5f, 0.0f,          1.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f,          0.0f, 1.0f
     };
 
     unsigned int quadIndices[] = {
@@ -49,29 +46,21 @@ TextInfo* TextLoader::drawText(Shader& shader, std::string text, float x, float 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    glDisableVertexAttribArray(3);
     glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     glEnable(GL_DEPTH_TEST);
-    //testTexture.Unbind();
 
     glDeleteBuffers(1, &quadVBO);
     glDeleteBuffers(1, &quadEBO);

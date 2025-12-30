@@ -36,6 +36,11 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 	glAttachShader(ID, vertexShader);
 	glAttachShader(ID, fragmentShader);
 
+	glBindAttribLocation(ID, 0, "aPos");
+	glBindAttribLocation(ID, 1, "aColor");
+	glBindAttribLocation(ID, 2, "aTex");
+	glBindAttribLocation(ID, 3, "aNormal");
+
 	glLinkProgram(ID);
 
 	glDeleteShader(vertexShader);
