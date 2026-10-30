@@ -19,7 +19,7 @@ GLM <br>
 stb_image <br>
 GLAD <br>
 
-To compile goodly, you must have these installed on your system.
+To compile super goodly, you must have these installed on your system.
 
 ## Build Instructions
 - Clone the repository
