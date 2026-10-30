@@ -45,7 +45,7 @@ void update(FishEngine::GameInstance *gameInstance, float deltatime)
     //runs every frame
 }
 ```
-- Here are some built in commands you can use in the Engine user code!
+- Here are some built in commands you can try in the Engine user code!
 ```
     //adds a physical box collider at position -25, -25, -5 with the scale of 50, 50, 5
     gameInstance->AddToPhysical(
